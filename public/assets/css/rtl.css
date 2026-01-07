@@ -212,8 +212,7 @@ body[dir="rtl"] .navbar-nav.ms-auto {
         margin-right: 1px;
     }
 }
-}
- 
+
 /* Dropdown menu RTL fixes */
 body[dir="rtl"] .dropdown-menu {
     left: auto;
@@ -711,5 +710,39 @@ body[dir="rtl"] select.form-select {
     background-position: left 0.75rem center;
     padding-right: 0.75rem;
     padding-left: 2.25rem;
+}
+
+/* ============================================
+   MOBILE NAVBAR POSITIONING (RTL)
+   ============================================ */
+@media (max-width: 991px) {
+    /* On mobile, position burger menu on the far left */
+    body[dir="rtl"] .navbar-area .navbar {
+        display: flex !important;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    body[dir="rtl"] .navbar-area .navbar .navbar-brand {
+        order: 2;
+        margin-right: auto;
+    }
+    
+    body[dir="rtl"] .navbar-area .navbar .other-option {
+        order: 1;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    body[dir="rtl"] .navbar-area .navbar .navbar-toggler {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    
+    /* Ensure the burger icon is on the far left */
+    body[dir="rtl"] .other-option.d-lg-none {
+        justify-content: flex-start !important;
+    }
 }
 

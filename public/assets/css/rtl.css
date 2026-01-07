@@ -1,9 +1,29 @@
 /* RTL Custom Styles for Arabic Language */
 
+/* ============================================
+   FORCE RTL GLOBALLY
+   ============================================ */
+html[dir="rtl"],
+html[dir="rtl"] body,
+body[dir="rtl"],
+body[dir="rtl"] * {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
 /* Global RTL Adjustments */
 body[dir="rtl"] {
     direction: rtl;
     text-align: right;
+}
+
+/* Override for centered elements */
+body[dir="rtl"] .text-center,
+body[dir="rtl"] h1.text-center,
+body[dir="rtl"] h2.text-center,
+body[dir="rtl"] h3.text-center,
+body[dir="rtl"] p.text-center {
+    text-align: center !important;
 }
 
 body[dir="rtl"] .text-start {
@@ -561,6 +581,84 @@ body[dir="rtl"] label {
 body[dir="rtl"] .form-check {
     padding-right: 1.5em;
     padding-left: 0;
+}
+
+/* ============================================
+   ADDITIONAL RTL ENHANCEMENTS
+   ============================================ */
+
+/* Lists and content */
+body[dir="rtl"] ul,
+body[dir="rtl"] ol {
+    padding-right: 1.5rem;
+    padding-left: 0;
+}
+
+/* Buttons with icons */
+body[dir="rtl"] .btn i,
+body[dir="rtl"] button i,
+body[dir="rtl"] a i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Flexbox RTL */
+body[dir="rtl"] .d-flex {
+    flex-direction: row-reverse;
+}
+
+/* Grid RTL */
+body[dir="rtl"] .row {
+    direction: rtl;
+}
+
+/* Float RTL */
+body[dir="rtl"] .float-start {
+    float: right !important;
+}
+
+body[dir="rtl"] .float-end {
+    float: left !important;
+}
+
+/* Breadcrumb RTL */
+body[dir="rtl"] .breadcrumb-menu {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Cards and sections */
+body[dir="rtl"] .card,
+body[dir="rtl"] .section,
+body[dir="rtl"] .container {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Input fields */
+body[dir="rtl"] input,
+body[dir="rtl"] textarea,
+body[dir="rtl"] select {
+    text-align: right;
+    direction: rtl;
+}
+
+/* Tables RTL */
+body[dir="rtl"] table {
+    direction: rtl;
+    text-align: right;
+}
+
+body[dir="rtl"] th,
+body[dir="rtl"] td {
+    text-align: right;
+}
+
+/* Modals and popups */
+body[dir="rtl"] .modal-content,
+body[dir="rtl"] .modal-body {
+    direction: rtl;
+    text-align: right;
 }
 
 body[dir="rtl"] .form-check-input {

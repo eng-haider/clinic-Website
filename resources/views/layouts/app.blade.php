@@ -37,8 +37,16 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.webp') }}" />
 
     @stack('styles')
+    
+    <style>
+        /* Force RTL for Arabic */
+        html[dir="rtl"] body {
+            direction: rtl !important;
+            text-align: right !important;
+        }
+    </style>
 </head>
-<body>
+<body dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
     <!--  Preloader Start -->
     <div class="loader-wrapper">
         <div class="loader"></div>

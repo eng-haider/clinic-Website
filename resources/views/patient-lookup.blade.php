@@ -1468,14 +1468,25 @@
         }
         
         /* Tabs responsive */
+        .patient-tabs {
+            margin-bottom: 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
         .patient-tabs-container {
             padding: 8px 12px;
-            gap: 6px;
+            gap: 8px;
+            justify-content: flex-start;
+            min-width: max-content;
         }
         
         .tab-link {
-            padding: 10px 20px;
+            padding: 12px 16px;
             font-size: 0.9375rem;
+            min-width: 48px;
+            justify-content: center;
+            flex-shrink: 0;
         }
         
         .tab-link span {
@@ -1483,7 +1494,13 @@
         }
         
         .tab-link i {
-            font-size: 1.375rem;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        /* Active tab more visible on mobile */
+        .tab-link.active {
+            box-shadow: 0 2px 8px rgba(var(--theme-color-rgb), 0.4);
         }
         
         /* Booking button responsive */
@@ -1583,6 +1600,66 @@
         .stat-value {
             font-size: 2.25rem;
         }
+        
+        /* Ensure all sections are visible on mobile */
+        .stats-grid,
+        .simple-list,
+        .info-list {
+            display: grid !important;
+            width: 100%;
+        }
+        
+        /* Statistics grid on mobile */
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px;
+            padding: 0 12px;
+        }
+        
+        .stat-box {
+            padding: 20px 16px;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+        }
+        
+        /* Table responsive */
+        .simple-list {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            display: block !important;
+        }
+        
+        .simple-list table {
+            min-width: 100%;
+            font-size: 0.875rem;
+        }
+        
+        .simple-list th,
+        .simple-list td {
+            padding: 12px 8px;
+            white-space: nowrap;
+        }
+        
+        /* Section titles visible */
+        .simple-list h3,
+        .info-list h3 {
+            display: flex !important;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            gap: 8px;
+        }
     }
     
     @media (max-width: 480px) {
@@ -1619,6 +1696,37 @@
         
         .case-photos-grid {
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+        
+        /* Smaller stats grid for very small screens */
+        .stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: 10px;
+        }
+        
+        .stat-box {
+            padding: 16px 12px;
+        }
+        
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.8125rem;
+        }
+        
+        /* Tabs better spacing on small screens */
+        .tab-link {
+            padding: 10px 12px;
+        }
+        
+        .tab-link i {
+            font-size: 1.25rem;
         }
     }
 </style>
@@ -2120,7 +2228,7 @@
         const teethIframe = document.getElementById('teethIframe');
        
         // Set iframe source to external teeth viewer
-        teethIframe.src = `http://localhost:8080/public/teeth/${patientCode}`;
+        teethIframe.src = `https://smartclinicv4.tctate.com/public/teeth/${patientCode}`;
         
         // Show the section
         toothDiagramSection.style.display = 'block';

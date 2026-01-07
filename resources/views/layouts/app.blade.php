@@ -44,6 +44,144 @@
             direction: rtl !important;
             text-align: right !important;
         }
+        
+        /* ============================================
+           MOBILE NAVIGATION FIXES
+           ============================================ */
+        
+        /* Hide header-top on mobile */
+        @media only screen and (max-width: 991px) {
+            .navbar-area .header-top {
+                display: none !important;
+            }
+            
+            /* Fix mobile navbar spacing */
+            .navbar-area .navbar {
+                padding: 12px 0 !important;
+            }
+            
+            /* Logo sizing on mobile */
+            .navbar-area .navbar .navbar-brand img {
+                height: 60px !important;
+                width: auto;
+            }
+            
+            /* Mobile toggler button */
+            .navbar-area .other-option {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .navbar-toggler {
+                padding: 8px;
+                border: none;
+                background: transparent;
+            }
+            
+            .burger-menu {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                width: 25px;
+            }
+            
+            .burger-menu span {
+                display: block;
+                height: 3px;
+                width: 100%;
+                background: var(--color-primary);
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+            
+            /* Fix for desktop menu items on mobile - hide completely */
+            .navbar-area .navbar-collapse {
+                display: none !important;
+            }
+        }
+        
+        /* RTL Mobile fixes */
+        @media only screen and (max-width: 991px) {
+            body[dir="rtl"] .navbar-area .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            body[dir="rtl"] .navbar-area .navbar .navbar-brand {
+                order: 1;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+            body[dir="rtl"] .navbar-area .other-option {
+                order: 2;
+                margin-right: 0;
+                margin-left: auto;
+            }
+            
+            body[dir="rtl"] .navbar-toggler {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+        
+        /* Offcanvas mobile menu improvements */
+        @media only screen and (max-width: 991px) {
+            .responsive-navbar.offcanvas {
+                width: 85% !important;
+                max-width: 320px;
+            }
+            
+            body[dir="rtl"] .responsive-navbar.offcanvas {
+                left: 0 !important;
+                right: auto !important;
+            }
+            
+            body[dir="rtl"] .responsive-navbar .offcanvas-header {
+                direction: rtl;
+                text-align: right;
+            }
+            
+            body[dir="rtl"] .responsive-navbar .offcanvas-body {
+                direction: rtl;
+                text-align: right;
+            }
+            
+            .responsive-navbar .accordion-link {
+                padding: 12px 20px;
+                display: block;
+                font-size: 15px;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+        }
+        
+        /* Fix container padding on mobile */
+        @media only screen and (max-width: 767px) {
+            .navbar-area .container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            /* Smaller logo on very small screens */
+            .navbar-area .navbar .navbar-brand img {
+                height: 50px !important;
+            }
+        }
+        
+        /* Sticky navbar mobile fix */
+        @media only screen and (max-width: 991px) {
+            .navbar-area.sticky {
+                top: 0 !important;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            
+            .navbar-area.sticky .header-top {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">

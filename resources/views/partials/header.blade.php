@@ -131,7 +131,7 @@
     <div class="offcanvas-body">
         <div class="accordion" id="navbarAccordion">
             <div class="accordion-item">
-                <a class="accordion-link" href="{{ route('home') }}">Home</a>
+                <a class="accordion-link" href="{{ route('home') }}">{{ __('menu.home') }}</a>
             </div>
             <div class="accordion-item">
                 <a class="accordion-link" href="{{ route('doctors.index') }}">{{ __('menu.dentists') }}</a>
@@ -143,19 +143,42 @@
                 <a class="accordion-link" href="{{ route('about') }}">{{ __('menu.about_us') }}</a>
             </div>
             <div class="accordion-item">
+                <a class="accordion-link" href="{{ route('appointments.create') }}">{{ __('menu.book_appointment') }}</a>
+            </div>
+            <div class="accordion-item">
+                <a class="accordion-link" href="{{ route('testimonials') }}">{{ __('menu.testimonials') }}</a>
+            </div>
+            <div class="accordion-item">
+                <a class="accordion-link" href="{{ route('faq') }}">{{ __('menu.faq') }}</a>
+            </div>
+            <div class="accordion-item">
                 <a class="accordion-link" href="{{ route('blog.index') }}">{{ __('menu.blog') }}</a>
             </div>
             <div class="accordion-item">
                 <a class="accordion-link" href="{{ route('contact') }}">{{ __('menu.contact_us') }}</a>
             </div>
+            
+            <!-- Phone Number Mobile -->
+            <div class="accordion-item mt-3 border-top pt-3">
+                <div class="mobile-contact-info" style="padding: 12px 20px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="flaticon-emergency-call" style="font-size: 20px; color: var(--color-primary);"></i>
+                        <div>
+                            <small class="d-block" style="font-size: 12px; color: #666;">{{ __('menu.phone_number') }}</small>
+                            <a href="tel:{{ setting('phone', '+968547856254') }}" style="color: var(--color-heading); font-weight: 600;">{{ setting('phone', '+968 547856 254') }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Language Switcher Mobile -->
-            <div class="accordion-item mt-3">
-                <form action="{{ route('language.switch') }}" method="POST">
+            <div class="accordion-item">
+                <form action="{{ route('language.switch') }}" method="POST" style="padding: 12px 20px;">
                     @csrf
                     <input type="hidden" name="locale" value="{{ app()->getLocale() == 'ar' ? 'en' : 'ar' }}">
-                    <button type="submit" class="btn btn-outline-primary w-100">
-                        <i class="ri-global-line me-2"></i>
-                        {{ __('menu.switch_language') }}
+                    <button type="submit" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i class="ri-global-line"></i>
+                        <span>{{ app()->getLocale() == 'ar' ? 'English' : 'العربية' }}</span>
                     </button>
                 </form>
             </div>

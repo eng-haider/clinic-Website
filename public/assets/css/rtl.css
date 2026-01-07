@@ -44,6 +44,46 @@ body[dir="rtl"] .text-lg-end {
     }
 }
 
+/* ============================================
+   MOBILE RTL NAVBAR FIXES
+   ============================================ */
+@media only screen and (max-width: 991px) {
+    body[dir="rtl"] .navbar-area .navbar {
+        direction: rtl;
+    }
+    
+    body[dir="rtl"] .offcanvas {
+        right: auto !important;
+        left: 0 !important;
+    }
+    
+    body[dir="rtl"] .offcanvas.offcanvas-end {
+        right: auto !important;
+        left: 0 !important;
+        border-left: none;
+        border-right: 1px solid rgba(0,0,0,.2);
+    }
+    
+    body[dir="rtl"] .offcanvas-header {
+        direction: rtl;
+    }
+    
+    body[dir="rtl"] .offcanvas-header .close-btn {
+        margin-left: 0;
+        margin-right: auto;
+    }
+    
+    body[dir="rtl"] .accordion-link {
+        text-align: right;
+        direction: rtl;
+    }
+    
+    body[dir="rtl"] .mobile-contact-info {
+        direction: rtl;
+        text-align: right;
+    }
+}
+
 /* Bootstrap RTL Fixes */
 body[dir="rtl"] .ms-auto {
     margin-right: auto !important;

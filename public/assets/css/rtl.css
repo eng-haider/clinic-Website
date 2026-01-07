@@ -164,16 +164,6 @@ body[dir="rtl"] .navbar-area .navbar .navbar-brand {
     grid-column: 1;
     order: 1;
 }
-
-/* Navbar collapse - second column (takes remaining space) */
-body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
-    grid-column: 2;
-    order: 2;
-    direction: rtl;
-    display: flex !important;
-    justify-content: flex-start;
-}
-
 /* Main nav - remove margins, let grid handle spacing */
 body[dir="rtl"] .navbar-nav.main-nav,
 body[dir="rtl"] .navbar-nav.ms-auto {
@@ -182,44 +172,48 @@ body[dir="rtl"] .navbar-nav.ms-auto {
 }
 
 /* Add padding and margin to last nav item */
- .navbar-nav.main-nav .nav-item:last-child {
-  
+.navbar-nav.main-nav .nav-item:last-child {
     margin-right: 22px !important;
 }
 
-/* Add spacing between navbar and others-option */
-body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
-    margin-left: 30px !important;
+/* Place layout-related navbar rules only on larger screens to avoid
+   breaking Bootstrap's collapse behavior on mobile devices */
+@media (min-width: 992px) {
+    /* Navbar collapse - second column (takes remaining space) */
+    body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
+        grid-column: 2;
+        order: 2;
+        direction: rtl;
+        display: flex !important;
+        justify-content: flex-start;
+        margin-left: 30px !important;
+    }
+
+    .others-option {
+        margin-right: 190px !important;
+    }
+
+    /* Others option - third column (far left) */
+    body[dir="rtl"] .others-option {
+        grid-column: 3;
+        order: 3;
+        margin-left: 0 !important;
+        margin-right: 164px !important;
+        direction: right !important;
+        float: right !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        flex-direction: row-reverse;
+    }
+
+    .others-option {
+        float: left;
+        direction: ltr;
+        margin-right: 1px;
+    }
 }
-
-.others-option {
-    margin-right: 190px !important;
 }
-/* Others option - third column (far left) */
-body[dir="rtl"] .others-option {
-    grid-column: 3;
-    order: 3;
-    margin-left: 0 !important;
-    margin-right: 164px !important;
-    direction: right !important;
-    float: right !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    flex-direction: row-reverse;
-}
-
-
-
- .others-option {
- float: left;
-    direction: ltr;
-    margin-right: 1px;
-}
-
-body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
-    direction: rtl;
-}
-
+ 
 /* Dropdown menu RTL fixes */
 body[dir="rtl"] .dropdown-menu {
     left: auto;

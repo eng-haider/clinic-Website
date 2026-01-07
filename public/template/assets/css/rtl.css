@@ -1,0 +1,612 @@
+/* RTL Custom Styles for Arabic Language */
+
+/* Global RTL Adjustments */
+body[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+body[dir="rtl"] .text-start {
+    text-align: right !important;
+}
+
+body[dir="rtl"] .text-end {
+    text-align: left !important;
+}
+
+body[dir="rtl"] .text-lg-end {
+    text-align: left !important;
+}
+
+@media (min-width: 992px) {
+    body[dir="rtl"] .text-lg-end {
+        text-align: right !important;
+    }
+}
+
+/* Bootstrap RTL Fixes */
+body[dir="rtl"] .ms-auto {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+body[dir="rtl"] .me-auto {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+body[dir="rtl"] .ms-1 {
+    margin-right: 0.25rem !important;
+    margin-left: 0 !important;
+}
+
+body[dir="rtl"] .ms-2 {
+    margin-right: 0.5rem !important;
+    margin-left: 0 !important;
+}
+
+body[dir="rtl"] .me-2 {
+    margin-left: 0.5rem !important;
+    margin-right: 0 !important;
+}
+
+body[dir="rtl"] .pe-2 {
+    padding-left: 0.5rem !important;
+    padding-right: 0 !important;
+}
+
+body[dir="rtl"] .ps-2 {
+    padding-right: 0.5rem !important;
+    padding-left: 0 !important;
+}
+
+/* Header Top RTL */
+body[dir="rtl"] .header-top .contact-info {
+    padding-right: 0;
+}
+
+body[dir="rtl"] .header-top .contact-info li {
+    margin-left: 0;
+    margin-right: 25px;
+    float: right;
+}
+
+body[dir="rtl"] .header-top .contact-info li:first-child {
+    margin-right: 0;
+}
+
+body[dir="rtl"] .header-top .contact-info li:last-child {
+    margin-right: 0;
+}
+
+body[dir="rtl"] .header-top .contact-info li i {
+    margin-right: 0;
+    margin-left: 8px;
+    float: right;
+}
+
+/* Navbar RTL - Keep navbar-expand-lg structure */
+body[dir="rtl"] .navbar-area {
+    direction: rtl;
+}
+
+body[dir="rtl"] .navbar-area .navbar {
+    direction: rtl;
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Navbar brand - first column */
+body[dir="rtl"] .navbar-area .navbar .navbar-brand {
+    grid-column: 1;
+    order: 1;
+}
+
+/* Navbar collapse - second column (takes remaining space) */
+body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
+    grid-column: 2;
+    order: 2;
+    direction: rtl;
+    display: flex !important;
+    justify-content: flex-start;
+}
+
+/* Main nav - remove margins, let grid handle spacing */
+body[dir="rtl"] .navbar-nav.main-nav,
+body[dir="rtl"] .navbar-nav.ms-auto {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Others option - third column (far left) */
+body[dir="rtl"] .others-option {
+    grid-column: 3;
+    order: 3;
+    margin-left: 0 !important;
+    margin-right: 164px !important;
+    direction: ltr !important;
+    float: left !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    flex-direction: row-reverse;
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-collapse {
+    direction: rtl;
+}
+
+/* Fix navbar collapse flex-basis in RTL mode */
+@media (min-width: 992px) {
+    body[dir="rtl"] .navbar-expand-lg .navbar-collapse {
+        flex-basis: auto !important;
+    }
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-nav .nav-item {
+    text-align: right;
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-nav .nav-item .dropdown-menu {
+    left: auto;
+    right: 0;
+    text-align: right;
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-nav .nav-item .dropdown-menu .nav-item .dropdown-menu {
+    left: auto;
+    right: -100%;
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-nav .nav-item .dropdown-toggle:before {
+    right: auto;
+    left: 32px;
+}
+
+body[dir="rtl"] .navbar-area .navbar .others-option .option-item:before {
+    left: 0;
+    right: auto;
+}
+
+body[dir="rtl"] .navbar-area .navbar .others-option .option-item .contact-item {
+    padding-left: 52px;
+    padding-right: 0;
+}
+
+body[dir="rtl"] .navbar-area .navbar .others-option .option-item .contact-item i {
+    left: 0;
+    right: auto;
+}
+
+body[dir="rtl"] .navbar-area .navbar .navbar-brand {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Hero Section RTL - Apply to .hero-wrap.style-one */
+body[dir="rtl"] .hero-wrap.style-one {
+    direction: rtl;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-content {
+    text-align: right;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-content span {
+    text-align: right;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-content h1 {
+    text-align: right;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-content p {
+    text-align: right;
+}
+
+/* Hero Form RTL - Place at bottom, RTL layout */
+body[dir="rtl"] .hero-wrap.style-one .hero-form {
+    direction: rtl;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-form .form-group {
+    text-align: right;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-form .form-group label {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-form .form-group label i {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-form .form-group input,
+body[dir="rtl"] .hero-wrap.style-one .hero-form .form-group select {
+    text-align: right;
+    direction: rtl;
+}
+
+/* Hero Shape Elements - Mirror for RTL */
+body[dir="rtl"] .hero-wrap.style-one .hero-shape-one {
+    left: auto;
+    right: 0;
+    transform: scaleX(-1);
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-shape-two {
+    right: auto;
+    left: 0;
+    transform: scaleX(-1);
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-shape-three {
+    left: auto;
+    right: 50px;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-shape-four {
+    left: auto;
+    right: 200px;
+}
+
+body[dir="rtl"] .hero-wrap.style-one .hero-shape-five {
+    right: auto;
+    left: 0;
+    transform: scaleX(-1);
+}
+
+/* Others Option RTL */
+body[dir="rtl"] .other-option {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+body[dir="rtl"] .other-option > * {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+body[dir="rtl"] .other-option > *:first-child {
+    margin-right: 0;
+}
+
+body[dir="rtl"] .others-option {
+    direction: rtl;
+    padding-left: 70px !important;
+    padding-right: 0 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+
+body[dir="rtl"] .others-option .option-item {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+body[dir="rtl"] .others-option .option-item:last-child {
+    margin-right: 0;
+}
+
+body[dir="rtl"] .others-option .option-item:first-child {
+    margin-right: 0;
+}
+
+/* Contact Item RTL */
+body[dir="rtl"] .contact-item {
+    text-align: right;
+    padding-left: 0;
+    padding-right: 50px;
+}
+
+body[dir="rtl"] .contact-item i {
+    right: auto;
+    left: 0;
+}
+
+/* Language Switcher */
+body[dir="rtl"] .language-switcher button {
+    flex-direction: row-reverse;
+}
+
+body[dir="rtl"] .language-switcher .ms-1 {
+    margin-left: 0 !important;
+    margin-right: 0.25rem !important;
+}
+
+.language-switcher {
+    position: relative;
+}
+
+.language-switcher .btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.language-switcher .btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.language-switcher .btn i {
+    font-size: 18px;
+}
+
+/* Breadcrumb RTL */
+body[dir="rtl"] .page-title-area .breadcrumb-list {
+    justify-content: flex-end;
+}
+
+body[dir="rtl"] .page-title-area .breadcrumb-list li {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+body[dir="rtl"] .page-title-area .breadcrumb-list li::before {
+    right: auto;
+    left: -8px;
+}
+
+/* Feature Cards RTL */
+body[dir="rtl"] .feature-card {
+    text-align: right;
+}
+
+body[dir="rtl"] .feature-card span {
+    float: right;
+}
+
+/* Service Cards RTL */
+body[dir="rtl"] .service-card .icon {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+body[dir="rtl"] .service-card .service-info {
+    text-align: right;
+}
+
+/* Doctor/Team Cards RTL */
+body[dir="rtl"] .doctor-card .content,
+body[dir="rtl"] .team-card .content {
+    text-align: right;
+}
+
+body[dir="rtl"] .doctor-card .social-links,
+body[dir="rtl"] .team-card .social-links {
+    justify-content: flex-end;
+}
+
+body[dir="rtl"] .doctor-card .social-links li,
+body[dir="rtl"] .team-card .social-links li {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* Blog RTL */
+body[dir="rtl"] .blog-card .content {
+    text-align: right;
+}
+
+body[dir="rtl"] .blog-meta li {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+body[dir="rtl"] .blog-meta li i {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+/* Testimonial RTL */
+body[dir="rtl"] .testimonial-card {
+    text-align: right;
+}
+
+body[dir="rtl"] .testimonial-card .client-info {
+    text-align: right;
+}
+
+body[dir="rtl"] .testimonial-card .quote-icon {
+    right: auto;
+    left: 20px;
+}
+
+/* Buttons RTL */
+body[dir="rtl"] .btn i {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+body[dir="rtl"] .btn.btn-primary i,
+body[dir="rtl"] .btn.btn-secondary i {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+/* Forms RTL */
+body[dir="rtl"] .form-group label {
+    text-align: right;
+}
+
+body[dir="rtl"] .form-control,
+body[dir="rtl"] .form-select {
+    text-align: right;
+}
+
+/* Footer RTL */
+body[dir="rtl"] .footer-widget ul li {
+    text-align: right;
+}
+
+body[dir="rtl"] .footer-widget ul li::before {
+    right: auto;
+    left: 0;
+}
+
+body[dir="rtl"] .footer-widget .social-link li {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* Pagination RTL */
+body[dir="rtl"] .pagination {
+    direction: ltr;
+}
+
+/* Swiper RTL */
+body[dir="rtl"] .swiper-button-next {
+    right: auto;
+    left: 10px;
+}
+
+body[dir="rtl"] .swiper-button-prev {
+    left: auto;
+    right: 10px;
+}
+
+/* List Style RTL */
+body[dir="rtl"] .list-style li::before {
+    right: 0;
+    left: auto;
+}
+
+body[dir="rtl"] .list-style li {
+    padding-left: 0;
+    padding-right: 30px;
+}
+
+/* Contact Info RTL */
+body[dir="rtl"] .contact-info-card .icon {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+/* Feature Box RTL */
+body[dir="rtl"] .feature-box .icon {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+body[dir="rtl"] .feature-box .content {
+    text-align: right;
+}
+
+/* Section Title RTL */
+body[dir="rtl"] .section-title {
+    text-align: center;
+}
+
+body[dir="rtl"] .section-title.text-start {
+    text-align: right !important;
+}
+
+/* Offcanvas RTL */
+body[dir="rtl"] .offcanvas-end {
+    right: auto;
+    left: 0;
+    border-right: none;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body[dir="rtl"] .responsive-navbar {
+    left: 0;
+    right: auto;
+}
+
+/* Modal RTL */
+body[dir="rtl"] .modal-header .btn-close {
+    margin: 0;
+    margin-left: auto;
+}
+
+/* Alert RTL */
+body[dir="rtl"] .alert {
+    text-align: right;
+}
+
+body[dir="rtl"] .alert .btn-close {
+    right: auto;
+    left: 1rem;
+}
+
+/* Table RTL */
+body[dir="rtl"] .table {
+    text-align: right;
+}
+
+body[dir="rtl"] .table th,
+body[dir="rtl"] .table td {
+    text-align: right;
+}
+
+/* Promo Box RTL */
+body[dir="rtl"] .promo-box {
+    text-align: right;
+}
+
+body[dir="rtl"] .promo-box span {
+    float: right;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 991px) {
+    body[dir="rtl"] .navbar-nav {
+        text-align: right;
+    }
+    
+    body[dir="rtl"] .navbar-nav .nav-item {
+        margin-right: 0;
+    }
+    
+    body[dir="rtl"] .navbar-area .navbar .others-option {
+        flex-direction: row;
+    }
+    
+    body[dir="rtl"] .others-option .option-item {
+        margin-left: 0;
+        margin-right: 15px;
+    }
+    
+    body[dir="rtl"] .other-option > * {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    
+    body[dir="rtl"] .other-option > *:first-child {
+        margin-right: 0;
+    }
+    
+    body[dir="rtl"] .hero-wrap.style-one .hero-content {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    body[dir="rtl"] .header-top .contact-info li {
+        margin-right: 15px;
+        float: none;
+        display: inline-block;
+    }
+    
+    body[dir="rtl"] .contact-item {
+        padding-right: 40px;
+    }
+    
+    body[dir="rtl"] .hero-wrap.style-one .hero-form {
+        margin-top: 20px;
+    }
+}

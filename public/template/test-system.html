@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار نظام البحث عن المريض</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #0066ff;
+            margin-bottom: 30px;
+        }
+        .test-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .test-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s;
+        }
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .test-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        .test-card p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        .info-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: right;
+        }
+        .info-box h3 {
+            color: #0066ff;
+            margin-bottom: 15px;
+        }
+        .info-box ul {
+            text-align: right;
+            padding-right: 20px;
+        }
+        .info-box li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        .status-success {
+            background: #28a745;
+        }
+        .code-example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            direction: ltr;
+            font-family: 'Courier New', monospace;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 اختبار نظام البحث عن المريض</h1>
+        
+        <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 30px;">
+            اختر أحد الخيارات التالية لاختبار النظام
+        </p>
+        
+        <div class="test-links">
+            <a href="patient-lookup.html" class="test-card">
+                <h3>🔍 صفحة البحث</h3>
+                <p>افتح صفحة البحث الرئيسية</p>
+            </a>
+            
+            <a href="qr-generator-demo.html" class="test-card">
+                <h3>📱 مولد QR</h3>
+                <p>قم بتوليد QR codes تجريبية</p>
+            </a>
+            
+            <a href="patient-lookup.html?code=PAT12345" class="test-card">
+                <h3>🧪 اختبار مباشر</h3>
+                <p>جرب البحث بكود تجريبي</p>
+            </a>
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 حالة الملفات</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li>
+                    <span class="status-indicator status-success"></span>
+                    <strong>patient-lookup.html</strong> - صفحة البحث الرئيسية ✓
+                </li>
+                <li>
+                    <span class="status-indicator status-success"></span>
+                    <strong>assets/js/patient-lookup.js</strong> - ملف JavaScript ✓
+                </li>
+                <li>
+                    <span class="status-indicator status-success"></span>
+                    <strong>qr-generator-demo.html</strong> - مولد QR التجريبي ✓
+                </li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h3>🔗 API Configuration</h3>
+            <p style="text-align: right;">رابط API الحالي:</p>
+            <div class="code-example">
+https://smartclinicv5.tctate.com/api/public/patient/lookup
+            </div>
+            <p style="text-align: right; margin-top: 15px; font-size: 0.9rem; color: #6c757d;">
+                لتغيير رابط API، قم بتعديل ملف <code>assets/js/patient-lookup.js</code>
+            </p>
+        </div>
+        
+        <div class="info-box">
+            <h3>📖 التوثيق المتوفر</h3>
+            <ul>
+                <li><strong>QUICK_START.md</strong> - دليل البداية السريعة</li>
+                <li><strong>PATIENT_LOOKUP_README.md</strong> - دليل الاستخدام الكامل</li>
+                <li><strong>LARAVEL_INTEGRATION_GUIDE.md</strong> - دليل التكامل مع Laravel</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h3>⚠️ ملاحظات مهمة</h3>
+            <ul>
+                <li>لاستخدام QR Scanner، يجب فتح الموقع على HTTPS أو localhost</li>
+                <li>تأكد من منح إذن الكاميرا للمتصفح</li>
+                <li>API الحالي يشير إلى: smartclinicv5.tctate.com</li>
+                <li>للاختبار، استخدم أي كود مريض من النظام الفعلي</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+            <p style="color: #6c757d; margin: 0;">
+                تم التطوير بواسطة <strong>GitHub Copilot</strong> 🤖
+            </p>
+        </div>
+    </div>
+</body>
+</html>

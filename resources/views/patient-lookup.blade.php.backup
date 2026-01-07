@@ -1,0 +1,1226 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>بحث عن مريض - Smart Clinic</title>
+    
+    <!-- Bootstrap CSS RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- RemixIcon CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <!-- Cairo Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif !important;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        /* Header Styles */
+        .page-header {
+            background: linear-gradient(135deg, #00d4ff, #0066ff);
+            padding: 40px 0;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .page-header h1 {
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .page-header p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.3rem;
+            margin: 10px 0 0 0;
+        }
+        
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        /* Search Card */
+        .search-card {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            margin-bottom: 40px;
+            border: 3px solid rgba(0, 212, 255, 0.1);
+        }
+        
+        .search-card-title {
+            color: #0066ff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .search-card-title i {
+            font-size: 2.5rem;
+        }
+        
+        /* Search Input */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 22px 80px 22px 30px;
+            border: 3px solid #e8f4ff;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            direction: ltr;
+            text-align: right;
+            background: #f8fbff;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: white;
+            box-shadow: 0 0 0 5px rgba(0, 212, 255, 0.1);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #00d4ff, #0066ff);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.3);
+        }
+        
+        .search-button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4);
+        }
+        
+        /* QR Scanner Button */
+        .qr-button {
+            width: 100%;
+            padding: 22px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.25rem;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .qr-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .qr-button i {
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+        
+        .qr-scanner-container {
+            display: none;
+            margin-top: 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Loading Spinner */
+        .loading-overlay {
+            display: none;
+            text-align: center;
+            padding: 100px 40px;
+        }
+        
+        .loading-spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #00d4ff;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: #333;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        /* Patient Info Section */
+        .patient-section {
+            display: none;
+        }
+        
+        /* Patient Header Card */
+        .patient-header {
+            background: linear-gradient(135deg, #00d4ff, #0066ff);
+            color: white;
+            padding: 60px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 50px rgba(0, 100, 255, 0.25);
+        }
+        
+        .patient-name {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .patient-name i {
+            font-size: 3.5rem;
+        }
+        
+        .patient-meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            font-size: 1.3rem;
+        }
+        
+        .meta-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.15);
+            padding: 12px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .meta-badge i {
+            font-size: 1.6rem;
+        }
+        
+        /* Info Cards Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-right: 8px solid #00d4ff;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 212, 255, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+        }
+        
+        .info-card:hover::before {
+            opacity: 1;
+        }
+        
+        .info-card-label {
+            color: #00d4ff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card-value {
+            color: #1a1a2e;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+        
+        /* Bills Summary Card */
+        .bills-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+        }
+        
+        .bills-summary h3 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .bills-summary h3 i {
+            font-size: 2.5rem;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .summary-card {
+            text-align: center;
+            padding: 35px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .summary-card:hover {
+            background: rgba(255,255,255,0.22);
+            transform: translateY(-8px);
+        }
+        
+        .summary-value {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .summary-label {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+        
+        /* Section Card */
+        .section-card {
+            background: white;
+            padding: 60px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 4px solid #f0f4f8;
+        }
+        
+        .section-header i {
+            color: #00d4ff;
+            font-size: 2.8rem;
+        }
+        
+        .section-header h3 {
+            color: #1a1a2e;
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        
+        /* Data Table */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 15px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .data-table thead {
+            background: linear-gradient(135deg, #00d4ff, #0066ff);
+            color: white;
+        }
+        
+        .data-table th {
+            padding: 22px 25px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        .data-table th:first-child {
+            border-radius: 15px 0 0 0;
+        }
+        
+        .data-table th:last-child {
+            border-radius: 0 15px 0 0;
+        }
+        
+        .data-table td {
+            padding: 22px 25px;
+            text-align: right;
+            border-bottom: 1px solid #f0f4f8;
+            font-size: 1.05rem;
+        }
+        
+        .data-table tbody tr {
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #f8fbff;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+        
+        .badge-danger {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+        }
+        
+        .badge-info {
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+            color: #0c5460;
+        }
+        
+        .badge-warning {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+        }
+        
+        /* Error Message */
+        .error-alert {
+            display: none;
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            padding: 25px 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-right: 8px solid #dc3545;
+            font-size: 1.15rem;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.2);
+        }
+        
+        .error-alert.show {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .error-alert i {
+            font-size: 2rem;
+        }
+        
+        /* Images Grid */
+        .images-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .image-item {
+            background: linear-gradient(135deg, #f8fbff, #e8f4ff);
+            padding: 40px;
+            border-radius: 18px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+        
+        .image-item:hover {
+            background: linear-gradient(135deg, #e8f4ff, #d1ebff);
+            transform: translateY(-8px);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+        
+        .image-item i {
+            font-size: 4.5rem;
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+        
+        .image-item p {
+            margin: 12px 0 5px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a2e;
+        }
+        
+        .image-item small {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .patient-name {
+                font-size: 2.2rem;
+            }
+            
+            .patient-meta-row {
+                gap: 20px;
+                font-size: 1.1rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .search-card {
+                padding: 30px;
+            }
+            
+            .patient-header {
+                padding: 35px;
+            }
+            
+            .section-card {
+                padding: 35px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 15px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .patient-name {
+                font-size: 1.8rem;
+            }
+            
+            .summary-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body dir="rtl">
+
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Search Card -->
+        <div class="search-card">
+            <h2 class="search-card-title">
+                <i class="ri-search-line"></i>
+                البحث عن مريض
+            </h2>
+
+            <!-- Error Message -->
+            <div class="error-alert" id="errorMessage">
+                <i class="ri-error-warning-line"></i>
+                <span id="errorText"></span>
+            </div>
+
+            <!-- Search Input -->
+            <div class="search-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="أدخل رمز المريض (مثال: PAT-12345)..."
+                    dir="ltr"
+                    value="{{ request('code') }}"
+                >
+                <button class="search-button" id="searchBtn">
+                    <i class="ri-search-2-line"></i> بحث
+                </button>
+            </div>
+
+            <!-- QR Scanner Button -->
+            <button class="qr-button" id="qrScannerBtn">
+                <i class="ri-qr-scan-2-line"></i>
+                <span>مسح رمز QR</span>
+            </button>
+
+            <!-- QR Scanner Container -->
+            <div class="qr-scanner-container" id="qrScannerContainer">
+                <div id="qr-reader"></div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingSpinner">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري البحث عن بيانات المريض...</p>
+        </div>
+
+        <!-- Patient Info Section -->
+        <div id="patientInfoSection" class="patient-section">
+            <!-- Patient Header Card -->
+            <div class="patient-header" id="patientHeader">
+                <!-- Will be populated dynamically -->
+            </div>
+
+            <!-- Patient Info Cards -->
+            <div class="info-grid" id="patientBasicInfo">
+                <!-- Will be populated dynamically -->
+            </div>
+
+            <!-- Bills Summary -->
+            <div id="billsSummaryCard" style="display: none;">
+                <div class="bills-summary">
+                    <h3><i class="ri-money-dollar-circle-line"></i> ملخص الفواتير</h3>
+                    <div class="summary-grid" id="billsSummaryGrid">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cases Section -->
+            <div class="section-card" id="casesCard" style="display: none;">
+                <div class="section-header">
+                    <i class="ri-heart-pulse-line"></i>
+                    <h3>الحالات الطبية</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الطبيب</th>
+                                <th>الفئة</th>
+                                <th>الشكوى الرئيسية</th>
+                                <th>التشخيص</th>
+                                <th>العلاج</th>
+                                <th>رقم السن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="casesTableBody">
+                            <!-- Will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bills Section -->
+            <div class="section-card" id="billsCard" style="display: none;">
+                <div class="section-header">
+                    <i class="ri-bill-line"></i>
+                    <h3>الفواتير</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الطبيب</th>
+                                <th>المبلغ</th>
+                                <th>تاريخ الدفع</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billsTableBody">
+                            <!-- Will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reservations Section -->
+            <div class="section-card" id="reservationsCard" style="display: none;">
+                <div class="section-header">
+                    <i class="ri-calendar-check-line"></i>
+                    <h3>المواعيد</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الطبيب</th>
+                                <th>من الساعة</th>
+                                <th>إلى الساعة</th>
+                                <th>الحالة</th>
+                                <th>ملاحظات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationsTableBody">
+                            <!-- Will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Images Section -->
+            <div class="section-card" id="imagesCard" style="display: none;">
+                <div class="section-header">
+                    <i class="ri-image-line"></i>
+                    <h3>الصور الطبية</h3>
+                </div>
+                <div class="images-gallery" id="imagesGrid">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // API Configuration
+        const API_URL = '{{ route("api.patient.lookup") }}';
+        const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').content;
+
+        let html5QrCode = null;
+        let isScannerActive = false;
+
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const qrScannerBtn = document.getElementById('qrScannerBtn');
+        const qrScannerContainer = document.getElementById('qrScannerContainer');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const patientInfoSection = document.getElementById('patientInfoSection');
+
+        // Event Listeners
+        searchBtn.addEventListener('click', handleSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+        qrScannerBtn.addEventListener('click', toggleQrScanner);
+
+        // Check URL parameters on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                searchInput.value = code;
+                handleSearch();
+            }
+        });
+
+        // Handle Search
+        async function handleSearch() {
+            const code = searchInput.value.trim();
+            
+            if (!code) {
+                showError('الرجاء إدخال رمز المريض');
+                return;
+            }
+            
+            await fetchPatientData(code);
+        }
+
+        // Toggle QR Scanner
+        function toggleQrScanner() {
+            if (isScannerActive) {
+                stopQrScanner();
+            } else {
+                startQrScanner();
+            }
+        }
+
+        // Start QR Scanner
+        function startQrScanner() {
+            qrScannerContainer.style.display = 'block';
+            qrScannerBtn.innerHTML = '<i class="ri-stop-circle-line"></i> <span>إيقاف المسح</span>';
+            
+            html5QrCode = new Html5Qrcode("qr-reader");
+            
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
+            };
+            
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                onScanSuccess,
+                onScanError
+            ).then(() => {
+                isScannerActive = true;
+            }).catch(err => {
+                console.error('Error starting QR scanner:', err);
+                showError('فشل في تشغيل الماسح الضوئي. الرجاء التحقق من إذن الكاميرا.');
+                stopQrScanner();
+            });
+        }
+
+        // Stop QR Scanner
+        function stopQrScanner() {
+            if (html5QrCode && isScannerActive) {
+                html5QrCode.stop().then(() => {
+                    qrScannerContainer.style.display = 'none';
+                    qrScannerBtn.innerHTML = '<i class="ri-qr-scan-2-line"></i> <span>مسح رمز QR</span>';
+                    isScannerActive = false;
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.error('Error stopping QR scanner:', err);
+                });
+            }
+        }
+
+        // On Scan Success
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log('QR Code scanned:', decodedText);
+            
+            stopQrScanner();
+            
+            let code = decodedText;
+            
+            try {
+                const url = new URL(decodedText);
+                const urlCode = url.searchParams.get('code');
+                if (urlCode) {
+                    code = urlCode;
+                }
+            } catch (e) {
+                // Not a URL, use as is
+            }
+            
+            searchInput.value = code;
+            fetchPatientData(code);
+        }
+
+        // On Scan Error
+        function onScanError(errorMessage) {
+            // Handle scan error silently
+        }
+
+        // Fetch Patient Data from API
+        async function fetchPatientData(code) {
+            hideError();
+            showLoading();
+            hidePatientInfo();
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.patient) {
+                    displayPatientData(data);
+                } else {
+                    showError('لم يتم العثور على بيانات للمريض');
+                }
+            } catch (error) {
+                console.error('Error fetching patient data:', error);
+                showError('حدث خطأ أثناء جلب البيانات. الرجاء المحاولة مرة أخرى.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Display Patient Data
+        function displayPatientData(data) {
+            const patient = data.patient;
+            
+            // Patient Header
+            const patientHeader = document.getElementById('patientHeader');
+            const sexIcon = patient.sex === 1 ? 'ri-men-line' : 'ri-women-line';
+            const sexText = patient.sex === 1 ? 'ذكر' : 'أنثى';
+            
+            patientHeader.innerHTML = `
+                <h2><i class="ri-user-line"></i> ${patient.name}</h2>
+                <div class="patient-meta">
+                    <div class="meta-item">
+                        <i class="${sexIcon}"></i>
+                        <span>${sexText}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="ri-calendar-line"></i>
+                        <span>العمر: ${patient.age} سنة</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="ri-phone-line"></i>
+                        <span>${patient.phone || 'غير متوفر'}</span>
+                    </div>
+                    ${patient.email ? `
+                    <div class="meta-item">
+                        <i class="ri-mail-line"></i>
+                        <span>${patient.email}</span>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Patient Basic Info
+            const patientBasicInfo = document.getElementById('patientBasicInfo');
+            patientBasicInfo.innerHTML = `
+                <div class="info-card">
+                    <h4>رقم المريض</h4>
+                    <p>#${patient.id}</p>
+                </div>
+                <div class="info-card">
+                    <h4>تاريخ الميلاد</h4>
+                    <p>${formatDate(patient.birth_date)}</p>
+                </div>
+                ${patient.address ? `
+                <div class="info-card">
+                    <h4>العنوان</h4>
+                    <p>${patient.address}</p>
+                </div>
+                ` : ''}
+                ${patient.systemic_conditions ? `
+                <div class="info-card">
+                    <h4>الحالات الجهازية</h4>
+                    <p>${patient.systemic_conditions}</p>
+                </div>
+                ` : ''}
+                <div class="info-card">
+                    <h4>تاريخ التسجيل</h4>
+                    <p>${formatDateTime(patient.created_at)}</p>
+                </div>
+                <div class="info-card">
+                    <h4>عدد الحالات</h4>
+                    <p>${data.cases_count}</p>
+                </div>
+                <div class="info-card">
+                    <h4>عدد المواعيد</h4>
+                    <p>${data.reservations_count}</p>
+                </div>
+            `;
+            
+            // Bills Summary
+            if (data.bills_summary) {
+                displayBillsSummary(data.bills_summary);
+            }
+            
+            // Cases
+            if (data.cases && data.cases.length > 0) {
+                displayCases(data.cases);
+            }
+            
+            // Bills
+            if (data.bills && data.bills.length > 0) {
+                displayBills(data.bills);
+            }
+            
+            // Reservations
+            if (data.reservations && data.reservations.length > 0) {
+                displayReservations(data.reservations);
+            }
+            
+            // Images
+            if (data.images && data.images.length > 0) {
+                displayImages(data.images);
+            }
+            
+            showPatientInfo();
+        }
+
+        // Display Bills Summary
+        function displayBillsSummary(summary) {
+            const billsSummaryCard = document.getElementById('billsSummaryCard');
+            const billsSummaryGrid = document.getElementById('billsSummaryGrid');
+            
+            billsSummaryGrid.innerHTML = `
+                <div class="summary-item">
+                    <div class="value">${formatCurrency(summary.total_bills)}</div>
+                    <div class="label">إجمالي الفواتير</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${formatCurrency(summary.paid_bills)}</div>
+                    <div class="label">المدفوع</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${formatCurrency(summary.unpaid_bills)}</div>
+                    <div class="label">غير المدفوع</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${summary.bills_count}</div>
+                    <div class="label">عدد الفواتير</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${summary.paid_count}</div>
+                    <div class="label">المدفوعة</div>
+                </div>
+                <div class="summary-item">
+                    <div class="value">${summary.unpaid_count}</div>
+                    <div class="label">غير المدفوعة</div>
+                </div>
+            `;
+            
+            billsSummaryCard.style.display = 'block';
+        }
+
+        // Display Cases
+        function displayCases(cases) {
+            const casesCard = document.getElementById('casesCard');
+            const casesTableBody = document.getElementById('casesTableBody');
+            
+            casesTableBody.innerHTML = cases.map(caseItem => `
+                <tr>
+                    <td>${formatDateTime(caseItem.created_at)}</td>
+                    <td>${caseItem.doctor || 'غير متوفر'}</td>
+                    <td><span class="badge badge-info">${translateCategory(caseItem.category)}</span></td>
+                    <td>${caseItem.chief_complain || 'غير متوفر'}</td>
+                    <td>${caseItem.diagnosis || 'غير متوفر'}</td>
+                    <td>${caseItem.treatment || 'غير متوفر'}</td>
+                    <td>${caseItem.tooth_number || '-'}</td>
+                </tr>
+            `).join('');
+            
+            casesCard.style.display = 'block';
+        }
+
+        // Display Bills
+        function displayBills(bills) {
+            const billsCard = document.getElementById('billsCard');
+            const billsTableBody = document.getElementById('billsTableBody');
+            
+            billsTableBody.innerHTML = bills.map(bill => `
+                <tr>
+                    <td>${formatDateTime(bill.created_at)}</td>
+                    <td>${bill.doctor || 'غير متوفر'}</td>
+                    <td>${formatCurrency(bill.price)}</td>
+                    <td>${bill.payment_date ? formatDate(bill.payment_date) : 'غير مدفوع'}</td>
+                    <td>
+                        <span class="badge ${bill.is_paid ? 'badge-success' : 'badge-danger'}">
+                            ${bill.is_paid ? 'مدفوع' : 'غير مدفوع'}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+            
+            billsCard.style.display = 'block';
+        }
+
+        // Display Reservations
+        function displayReservations(reservations) {
+            const reservationsCard = document.getElementById('reservationsCard');
+            const reservationsTableBody = document.getElementById('reservationsTableBody');
+            
+            reservationsTableBody.innerHTML = reservations.map(reservation => `
+                <tr>
+                    <td>${formatDate(reservation.reservation_start_date)}</td>
+                    <td>${reservation.doctor || 'غير متوفر'}</td>
+                    <td>${reservation.reservation_from_time}</td>
+                    <td>${reservation.reservation_to_time}</td>
+                    <td>
+                        <span class="badge ${reservation.is_waiting ? 'badge-warning' : 'badge-info'}">
+                            ${reservation.is_waiting ? 'في الانتظار' : (reservation.status || 'محجوز')}
+                        </span>
+                    </td>
+                    <td>${reservation.notes || '-'}</td>
+                </tr>
+            `).join('');
+            
+            reservationsCard.style.display = 'block';
+        }
+
+        // Display Images
+        function displayImages(images) {
+            const imagesCard = document.getElementById('imagesCard');
+            const imagesGrid = document.getElementById('imagesGrid');
+            
+            imagesGrid.innerHTML = images.map(image => `
+                <div class="image-card">
+                    <i class="ri-image-2-line"></i>
+                    <p>صورة #${image.id}</p>
+                    <small>${formatDateTime(image.created_at)}</small>
+                </div>
+            `).join('');
+            
+            imagesCard.style.display = 'block';
+        }
+
+        // Utility Functions
+        function formatDate(dateString) {
+            if (!dateString) return 'غير متوفر';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-IQ', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function formatDateTime(dateString) {
+            if (!dateString) return 'غير متوفر';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-IQ', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatCurrency(amount) {
+            if (!amount && amount !== 0) return 'غير متوفر';
+            return new Intl.NumberFormat('ar-IQ', {
+                style: 'decimal',
+                minimumFractionDigits: 0
+            }).format(amount) + ' دينار';
+        }
+
+        function translateCategory(category) {
+            const categories = {
+                'endo': 'علاج العصب',
+                'ortho': 'تقويم',
+                'prosth': 'تعويض',
+                'perio': 'لثة',
+                'surgery': 'جراحة',
+                'pedo': 'أطفال',
+                'general': 'عام'
+            };
+            return categories[category] || category;
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.add('show');
+            
+            setTimeout(() => {
+                hideError();
+            }, 5000);
+        }
+
+        function hideError() {
+            errorMessage.classList.remove('show');
+        }
+
+        function showLoading() {
+            loadingSpinner.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+        }
+
+        function showPatientInfo() {
+            patientInfoSection.style.display = 'block';
+        }
+
+        function hidePatientInfo() {
+            patientInfoSection.style.display = 'none';
+            
+            // Hide all cards
+            document.getElementById('billsSummaryCard').style.display = 'none';
+            document.getElementById('casesCard').style.display = 'none';
+            document.getElementById('billsCard').style.display = 'none';
+            document.getElementById('reservationsCard').style.display = 'none';
+            document.getElementById('imagesCard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -65,6 +65,9 @@
                                 <a href="{{ route('appointments.create') }}" class="nav-link">{{ __('menu.book_appointment') }}</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('bookings.index') }}" class="nav-link">{{ __('menu.bookings_dashboard') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('testimonials') }}" class="nav-link">{{ __('menu.testimonials') }}</a>
                             </li>
                             <li class="nav-item">
@@ -144,6 +147,9 @@
             </div>
             <div class="accordion-item">
                 <a class="accordion-link" href="{{ route('appointments.create') }}">{{ __('menu.book_appointment') }}</a>
+            </div>
+            <div class="accordion-item">
+                <a class="accordion-link" href="{{ route('bookings.index') }}">{{ __('menu.bookings_dashboard') }}</a>
             </div>
             <div class="accordion-item">
                 <a class="accordion-link" href="{{ route('testimonials') }}">{{ __('menu.testimonials') }}</a>

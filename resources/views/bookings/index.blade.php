@@ -46,7 +46,7 @@
                                 <div class="stat-card pending">
                                     <i class="ri-time-line"></i>
                                     <div class="stat-info">
-                                        <h3>{{ $bookings->where('status', 'pending')->count() }}</h3>
+                                        <h3>{{ $stats['pending'] ?? 0 }}</h3>
                                         <p>{{ __('Pending') }}</p>
                                     </div>
                                 </div>
@@ -55,7 +55,7 @@
                                 <div class="stat-card confirmed">
                                     <i class="ri-check-line"></i>
                                     <div class="stat-info">
-                                        <h3>{{ $bookings->where('status', 'confirmed')->count() }}</h3>
+                                        <h3>{{ $stats['confirmed'] ?? 0 }}</h3>
                                         <p>{{ __('Confirmed') }}</p>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                 <div class="stat-card completed">
                                     <i class="ri-check-double-line"></i>
                                     <div class="stat-info">
-                                        <h3>{{ $bookings->where('status', 'completed')->count() }}</h3>
+                                        <h3>{{ $stats['completed'] ?? 0 }}</h3>
                                         <p>{{ __('Completed') }}</p>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                 <div class="stat-card cancelled">
                                     <i class="ri-close-line"></i>
                                     <div class="stat-info">
-                                        <h3>{{ $bookings->where('status', 'cancelled')->count() }}</h3>
+                                        <h3>{{ $stats['cancelled'] ?? 0 }}</h3>
                                         <p>{{ __('Cancelled') }}</p>
                                     </div>
                                 </div>
@@ -124,7 +124,13 @@
                                             <td>
                                                 <div class="date-info">
                                                     <i class="ri-calendar-line"></i>
-                                                    <span>{{ $booking->booking_date->format('Y-m-d') }}</span>
+                                                    <span>
+                                                        @try
+                                                            {{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'Invalid Date' }}
+                                                        @catch(\Exception $e)
+                                                            <span class="text-danger">Invalid Date</span>
+                                                        @endtry
+                                                    </span>
                                                 </div>
                                             </td>
                                             <td>

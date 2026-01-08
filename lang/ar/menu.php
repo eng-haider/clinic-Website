@@ -7,6 +7,7 @@ return [
     'pages' => 'الصفحات',
     'about_us' => 'من نحن',
     'book_appointment' => 'احجز موعد',
+    'bookings_dashboard' => 'لوحة الحجوزات',
     'testimonials' => 'آراء العملاء',
     'faq' => 'الأسئلة الشائعة',
     'blog' => 'المدونة',

@@ -1898,13 +1898,26 @@
                     <i class="ri-tooth-line"></i>
                     مخطط الأسنان
                 </h3>
-                <div class="tooth-diagram-container">
+                <div class="tooth-diagram-container" style="position: relative; min-height: 700px;">
+                    <!-- Loading Spinner -->
+                    <div id="teethLoading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
+                        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #4a7ab5; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                        <p style="color: #4a7ab5; font-weight: 600;">جاري تحميل مخطط الأسنان...</p>
+                    </div>
+                    <style>
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
                     <iframe 
                         id="teethIframe" 
                         src="" 
                         frameborder="0"
-                        style="width: 100%; height: 700px; border: none; border-radius: 8px;"
-                        title="Tooth Diagram">
+                        style="width: 100%; height: 700px; border: none; border-radius: 8px; background: white;"
+                        title="Tooth Diagram"
+                        onload="document.getElementById('teethLoading').style.display='none';"
+                        onerror="document.getElementById('teethLoading').innerHTML='<p style=color:red;>خطأ في تحميل المخطط</p>';">
                     </iframe>
                 </div>
             </div>
@@ -2227,8 +2240,9 @@
         const toothDiagramSection = document.getElementById('toothDiagramSection');
         const teethIframe = document.getElementById('teethIframe');
        
-        // Set iframe source to external teeth viewer
-        teethIframe.src = `https://smartclinicv4.tctate.com/public/teeth/${patientCode}`;
+        // Use our Laravel proxy route instead of direct external URL
+        // This bypasses X-Frame-Options restrictions
+        teethIframe.src = `/tooth-diagram/${patientCode}`;
         
         // Show the section
         toothDiagramSection.style.display = 'block';
@@ -2618,6 +2632,23 @@
         const form = event.target;
         const submitBtn = form.querySelector('.btn-confirm');
         const originalBtnHTML = submitBtn.innerHTML;
+        
+        // Get form values
+        const bookingDate = form.querySelector('[name="booking_date"]').value;
+        const patientPhone = form.querySelector('[name="patient_phone"]').value;
+        
+        // Validate date format
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(bookingDate)) {
+            showErrorMessage('يرجى إدخال تاريخ صحيح (YYYY-MM-DD)');
+            return;
+        }
+        
+        // Validate phone
+        if (!patientPhone || patientPhone.length < 10) {
+            showErrorMessage('يرجى إدخال رقم هاتف صحيح (10 أرقام على الأقل)');
+            return;
+        }
         
         // Disable submit button and show loading
         submitBtn.disabled = true;

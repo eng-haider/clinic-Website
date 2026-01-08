@@ -15,8 +15,16 @@ class BookingController extends Controller
     {
         $bookings = Booking::orderBy('created_at', 'desc')
             ->paginate(20);
+        
+        // Get stats for all bookings (not just paginated ones)
+        $stats = [
+            'pending' => Booking::where('status', 'pending')->count(),
+            'confirmed' => Booking::where('status', 'confirmed')->count(),
+            'completed' => Booking::where('status', 'completed')->count(),
+            'cancelled' => Booking::where('status', 'cancelled')->count(),
+        ];
 
-        return view('bookings.index', compact('bookings'));
+        return view('bookings.index', compact('bookings', 'stats'));
     }
 
     /**
@@ -26,10 +34,14 @@ class BookingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'patient_phone' => 'required|string|min:10',
-            'booking_date' => 'required|date|after_or_equal:today',
+            'booking_date' => 'required|date_format:Y-m-d|after_or_equal:today',
             'patient_code' => 'nullable|string',
             'patient_name' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
+        ], [
+            'booking_date.required' => 'The booking date is required.',
+            'booking_date.date_format' => 'The booking date must be in the format YYYY-MM-DD.',
+            'booking_date.after_or_equal' => 'The booking date must be today or a future date.',
         ]);
 
         if ($validator->fails()) {

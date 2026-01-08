@@ -11,6 +11,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PatientLookupController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ToothDiagramProxyController;
 
 // Language Switcher
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
@@ -47,6 +48,9 @@ Route::get('/patient-system', [PatientLookupController::class, 'home'])->name('p
 Route::get('/patient-lookup', [PatientLookupController::class, 'index'])->name('patient.lookup');
 Route::get('/qr-generator', [PatientLookupController::class, 'qrGenerator'])->name('qr.generator');
 Route::post('/api/patient/lookup', [PatientLookupController::class, 'lookup'])->name('api.patient.lookup');
+
+// Tooth Diagram Proxy (to bypass X-Frame-Options)
+Route::get('/tooth-diagram/{patientCode}', [ToothDiagramProxyController::class, 'show'])->name('tooth.diagram.proxy');
 
 // Bookings
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');

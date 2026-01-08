@@ -7,6 +7,7 @@ return [
     'pages' => 'Pages',
     'about_us' => 'About Us',
     'book_appointment' => 'Book Appointment',
+    'bookings_dashboard' => 'Bookings Dashboard',
     'testimonials' => 'Testimonials',
     'faq' => 'FAQ',
     'blog' => 'Blog',

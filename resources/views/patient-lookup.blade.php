@@ -1507,35 +1507,93 @@
         
         /* Booking button responsive */
         .booking-button {
-            padding: 12px 24px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            min-height: 42px;
         }
         
-        .profile-photo-wrapper {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+        /* COMPACT PROFILE HEADER FOR MOBILE */
+        .profile-header {
+            margin-bottom: 20px;
+            border-radius: 16px;
         }
         
-        .profile-main-info {
-            text-align: center;
+        .profile-cover {
+            height: 80px !important; /* Reduced from 150px */
+            background: linear-gradient(135deg, #4a7ab5 0%, #2a5a8f 100%);
         }
         
         .profile-photo-section {
-            padding: 0 24px;
+            padding: 0 16px;
+            margin-top: -40px; /* Reduced from -80px */
         }
         
-        .profile-details {
-            padding: 30px 24px;
+        .profile-photo-wrapper {
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            gap: 16px;
+        }
+        
+        .profile-photo {
+            width: 80px !important; /* Reduced from 160px */
+            height: 80px !important;
+            border-radius: 12px;
+            border: 3px solid white;
+            flex-shrink: 0;
+        }
+        
+        .profile-photo-icon {
+            font-size: 2.5rem !important; /* Reduced from 5rem */
+        }
+        
+        .profile-main-info {
+            text-align: left;
+            padding-bottom: 0;
+            flex: 1;
         }
         
         .profile-name {
-            font-size: 2rem;
-            text-align: center;
+            font-size: 1.25rem !important; /* Reduced from 2rem */
+            margin-bottom: 6px !important;
+            line-height: 1.2;
+        }
+        
+        .profile-id {
+            font-size: 0.8rem !important;
+            padding: 4px 10px !important;
+            margin-bottom: 8px !important;
+            margin-right: 0 !important;
+            display: inline-block;
+        }
+        
+        .profile-details {
+            padding: 16px !important; /* Reduced from 30px 24px */
+            border-radius: 0 0 16px 16px;
         }
         
         .profile-info {
-            gap: 16px;
+            gap: 10px;
+            grid-template-columns: 1fr; /* Stack items vertically */
+        }
+        
+        .profile-info-item {
+            padding: 10px 14px !important; /* Reduced padding */
+            min-height: 42px !important; /* Reduced height */
+            font-size: 0.875rem !important;
+            gap: 10px;
+        }
+        
+        .profile-info-item i {
+            font-size: 1.25rem !important; /* Smaller icons */
+        }
+        
+        .profile-info-item strong {
+            font-size: 0.875rem;
+        }
+        
+        .profile-info-item span {
+            font-size: 0.875rem;
         }
         
         .info-list {
@@ -1669,17 +1727,54 @@
             height: 400px !important;
         }
         
-        .profile-name {
-            font-size: 1.75rem;
+        /* Even more compact for very small screens */
+        .profile-cover {
+            height: 60px !important;
+        }
+        
+        .profile-photo-section {
+            margin-top: -30px !important;
+            padding: 0 12px !important;
         }
         
         .profile-photo {
-            width: 160px;
-            height: 160px;
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 10px !important;
         }
         
         .profile-photo-icon {
-            font-size: 5rem;
+            font-size: 2rem !important;
+        }
+        
+        .profile-name {
+            font-size: 1.125rem !important;
+            margin-bottom: 4px !important;
+        }
+        
+        .profile-id {
+            font-size: 0.75rem !important;
+            padding: 3px 8px !important;
+        }
+        
+        .profile-details {
+            padding: 12px !important;
+        }
+        
+        .profile-info-item {
+            padding: 8px 10px !important;
+            min-height: 38px !important;
+            font-size: 0.8125rem !important;
+        }
+        
+        .profile-info-item i {
+            font-size: 1.125rem !important;
+        }
+        
+        .booking-button {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            min-height: 38px;
         }
         
         .search-title {
@@ -1805,39 +1900,7 @@
         <!-- Patient Profile Section -->
         <div id="patientProfile" class="patient-profile">
             
-            <!-- Sticky Tab Navigation -->
-            <nav class="patient-tabs" id="patientTabs" style="display: none;">
-                <div class="patient-tabs-container">
-                    <a href="#patient-info" class="tab-link active" data-section="patient-info">
-                        <i class="ri-user-line"></i>
-                        <span>Patient Info</span>
-                    </a>
-                    <!-- Statistics Tab - Commented Out
-                    <a href="#patient-stats" class="tab-link" data-section="patient-stats">
-                        <i class="ri-bar-chart-box-line"></i>
-                        <span>Statistics</span>
-                    </a>
-                    -->
-                    <a href="#patient-cases" class="tab-link" data-section="patient-cases">
-                        <i class="ri-heart-pulse-line"></i>
-                        <span>الحالات الطبية</span>
-                    </a>
-                    <a href="#patient-teeth" class="tab-link" data-section="patient-teeth">
-                        <i class="ri-tooth-line"></i>
-                        <span>مخطط الأسنان</span>
-                    </a>
-                    <!-- Bills Tab - Commented Out
-                    <a href="#patient-bills" class="tab-link" data-section="patient-bills">
-                        <i class="ri-bill-line"></i>
-                        <span>الفواتير</span>
-                    </a>
-                    -->
-                    <a href="#patient-appointments" class="tab-link" data-section="patient-appointments">
-                        <i class="ri-calendar-check-line"></i>
-                        <span>المواعيد</span>
-                    </a>
-                </div>
-            </nav>
+         
             
             <!-- Section Anchor: Patient Info -->
             <span class="section-anchor" id="patient-info"></span>

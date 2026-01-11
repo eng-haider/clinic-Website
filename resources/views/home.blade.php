@@ -3,8 +3,9 @@
 @section('title', setting('clinic_name', 'Home - Clinic Website'))
 
 @section('content')
+<div class="hero-sections-wrapper">
 <!-- Hero Section Start -->
-<div class="hero-wrap style-two" style="background-image: url('{{ setting('hero_background_image', asset('assets/img/hero/hero-img-2.webp')) }}');">
+<div class="hero-wrap style-two hero-top-section" style="background-image: url('{{ setting('hero_background_image', asset('assets/img/hero/hero-img-2.webp')) }}');">
         <img src="{{ asset('assets/img/hero/hero-shape-8.webp') }}" alt="Image" class="hero-shape-two animationFramesTwo sm-none" />
     <img src="{{ asset('assets/img/hero/hero-shape-6.webp') }}" alt="Image" class="hero-shape-one" />
 
@@ -26,7 +27,7 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container hero-booking-section">
     <div class="hero-form-wrap">
         <div class="contact-item-wrap">
             <div class="contact-item">
@@ -96,8 +97,157 @@
 </div>
 <!-- Hero Section End -->
 
+<!-- Medical File Quick Access Start -->
+<section class="medical-file-quick-access hero-medical-section" style="padding: 2rem 0; background: linear-gradient(135deg, #10b981 0%, #0b6efd 100%); position: relative; overflow: hidden;">
+    <!-- Decorative pattern -->
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg></div>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Form Always Visible -->
+                <div id="medicalFileForm" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 16px; padding: 2rem; border: 2px solid rgba(255, 255, 255, 0.2);">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(255, 255, 255, 0.25); width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="ri-folder-user-line" style="font-size: 2rem; color: #ffffff;"></i>
+                        </div>
+                        <h3 style="color: #ffffff; font-size: 1.5rem; font-weight: 700; margin: 0 0 0.5rem 0;">
+                            شاهد ملفك الطبي
+                        </h3>
+                        <p style="color: rgba(255, 255, 255, 0.9); margin: 0; font-size: 0.95rem;">
+                            الوصول الآمن إلى سجلاتك الطبية • جميع المعلومات محمية
+                        </p>
+                    </div>
+
+                    <form id="quickAccessForm" onsubmit="handleQuickAccess(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="color: #ffffff; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                        <i class="ri-qr-code-line"></i> رمز QR
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="quickPatientCode" 
+                                        style="width: 100%; padding: 0.875rem 1rem; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; background: rgba(255, 255, 255, 0.25); color: #ffffff; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;"
+                                        placeholder="أدخل رمز QR"
+                                        required
+                                        dir="rtl"
+                                        onfocus="this.style.borderColor='rgba(255,255,255,0.6)'; this.style.background='rgba(255,255,255,0.35)';"
+                                        onblur="this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255,255,255,0.25)';"
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="color: #ffffff; font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.95rem;">
+                                        <i class="ri-phone-line"></i> رقم الهاتف
+                                    </label>
+                                    <input 
+                                        type="tel" 
+                                        id="quickPatientPhone" 
+                                        style="width: 100%; padding: 0.875rem 1rem; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; background: rgba(255, 255, 255, 0.25); color: #ffffff; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;"
+                                        placeholder="أدخل رقم الهاتف"
+                                        required
+                                        dir="rtl"
+                                        onfocus="this.style.borderColor='rgba(255,255,255,0.6)'; this.style.background='rgba(255,255,255,0.35)';"
+                                        onblur="this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255,255,255,0.25)';"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button 
+                                type="submit"
+                                style="width: 100%; padding: 1rem; border: none; border-radius: 12px; background: rgba(255, 255, 255, 0.95); color: #10b981; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+                                onmouseover="this.style.background='#ffffff'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(0,0,0,0.2)'"
+                                onmouseout="this.style.background='rgba(255,255,255,0.95)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'"
+                            >
+                                <i class="ri-arrow-left-line" style="transform: rotate(180deg);"></i> عرض السجلات الطبية
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Mobile responsive styles and section ordering */
+@media (max-width: 768px) {
+    /* Enable flexbox on wrapper for reordering */
+    .hero-sections-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Hero top section (image/text) - order 1 */
+    .hero-top-section {
+        order: 1;
+    }
+    
+    /* Medical file section - order 2 (appears before booking) */
+    .hero-medical-section {
+        order: 2;
+        padding: 1.5rem 0 !important;
+    }
+    
+    /* Booking section - order 3 (appears after medical file) */
+    .hero-booking-section {
+        order: 3;
+    }
+    
+    #medicalFileForm {
+        padding: 1.5rem 1rem !important;
+    }
+
+    #medicalFileForm h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    #medicalFileForm input {
+        font-size: 0.95rem !important;
+        padding: 0.75rem !important;
+    }
+    
+    #medicalFileForm button {
+        font-size: 0.95rem !important;
+        padding: 0.875rem !important;
+    }
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+</style>
+
+<script>
+function handleQuickAccess(event) {
+    event.preventDefault();
+    
+    const code = document.getElementById('quickPatientCode').value.trim();
+    const phone = document.getElementById('quickPatientPhone').value.trim();
+    
+    if (code && phone) {
+        // Redirect to patient lookup page with parameters
+        window.location.href = `{{ route('patient.lookup') }}?code=${encodeURIComponent(code)}&phone=${encodeURIComponent(phone)}`;
+    }
+}
+</script>
+<!-- Medical File Quick Access End -->
+</div>
+<!-- Hero Sections Wrapper End -->
+
 <!-- Patient Lookup Section Start -->
-<section class="patient-lookup-section ptb-100">
+<section class="patient-lookup-section ptb-100" style="display: none;">
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">

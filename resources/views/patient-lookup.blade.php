@@ -3,6 +3,8 @@
 @section('title', __('Patient Lookup') . ' - ' . config('app.name'))
 
 @push('styles')
+<!-- Fancybox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 <style>
     /* ============================================
        MEDICAL-GRADE PATIENT PROFILE SYSTEM
@@ -1747,6 +1749,8 @@
 </div>
 <!-- Breadcrumb Section End -->
 
+
+
 <!-- Patient Lookup Section Start -->
 <section class="ptb-100">
     <div class="container">
@@ -1808,10 +1812,12 @@
                         <i class="ri-user-line"></i>
                         <span>Patient Info</span>
                     </a>
+                    <!-- Statistics Tab - Commented Out
                     <a href="#patient-stats" class="tab-link" data-section="patient-stats">
                         <i class="ri-bar-chart-box-line"></i>
                         <span>Statistics</span>
                     </a>
+                    -->
                     <a href="#patient-cases" class="tab-link" data-section="patient-cases">
                         <i class="ri-heart-pulse-line"></i>
                         <span>الحالات الطبية</span>
@@ -1820,10 +1826,12 @@
                         <i class="ri-tooth-line"></i>
                         <span>مخطط الأسنان</span>
                     </a>
+                    <!-- Bills Tab - Commented Out
                     <a href="#patient-bills" class="tab-link" data-section="patient-bills">
                         <i class="ri-bill-line"></i>
                         <span>الفواتير</span>
                     </a>
+                    -->
                     <a href="#patient-appointments" class="tab-link" data-section="patient-appointments">
                         <i class="ri-calendar-check-line"></i>
                         <span>المواعيد</span>
@@ -1867,14 +1875,15 @@
                 </div>
             </div>
 
-            <!-- Section Anchor: Statistics -->
-            <span class="section-anchor" id="patient-stats"></span>
+            <!-- Section Anchor: Statistics - Commented Out -->
+            <!-- <span class="section-anchor" id="patient-stats"></span> -->
             
-            <!-- Statistics -->
+            <!-- Statistics - Commented Out -->
+            <!--
             <div class="stats-grid" id="statsGrid" data-aos="fade-up" data-aos-delay="200">
                 <!-- Will be populated dynamically -->
             </div>
-
+         
             <!-- Section Anchor: Medical Cases -->
             <span class="section-anchor" id="patient-cases"></span>
             
@@ -1889,6 +1898,17 @@
                 </div>
             </div>
 
+            <!-- Medical Photos Section -->
+            <div class="simple-list" id="photosList" style="display: none;" data-aos="fade-up" data-aos-delay="325">
+                <h3>
+                    <i class="ri-gallery-line"></i>
+                    الصور الطبية
+                </h3>
+                <div id="photosContainer" class="case-photos-grid">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+
             <!-- Section Anchor: Tooth Diagram -->
             <span class="section-anchor" id="patient-teeth"></span>
             
@@ -1898,34 +1918,14 @@
                     <i class="ri-tooth-line"></i>
                     مخطط الأسنان
                 </h3>
-                <div class="tooth-diagram-container" style="position: relative; min-height: 700px;">
-                    <!-- Loading Spinner -->
-                    <div id="teethLoading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
-                        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #4a7ab5; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                        <p style="color: #4a7ab5; font-weight: 600;">جاري تحميل مخطط الأسنان...</p>
-                    </div>
-                    <style>
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
-                        }
-                    </style>
-                    <iframe 
-                        id="teethIframe" 
-                        src="" 
-                        frameborder="0"
-                        style="width: 100%; height: 700px; border: none; border-radius: 8px; background: white;"
-                        title="Tooth Diagram"
-                        onload="document.getElementById('teethLoading').style.display='none';"
-                        onerror="document.getElementById('teethLoading').innerHTML='<p style=color:red;>خطأ في تحميل المخطط</p>';">
-                    </iframe>
-                </div>
+                <iframe id="teethIframe" src="" frameborder="0" style="width: 100%; height: 700px;"></iframe>
             </div>
 
-            <!-- Section Anchor: Bills -->
-            <span class="section-anchor" id="patient-bills"></span>
+            <!-- Section Anchor: Bills - Commented Out -->
+            <!-- <span class="section-anchor" id="patient-bills"></span> -->
             
-            <!-- Bills List -->
+            <!-- Bills List - Commented Out -->
+            <!-- 
             <div class="simple-list" id="billsList" style="display: none;" data-aos="fade-up" data-aos-delay="400">
                 <h3>
                     <i class="ri-bill-line"></i>
@@ -1934,9 +1934,9 @@
                 <div id="billsContainer">
                     <!-- Will be populated dynamically -->
                 </div>
-            </div>
+                
 
-            <!-- Section Anchor: Appointments -->
+                   <!-- Section Anchor: Appointments -->
             <span class="section-anchor" id="patient-appointments"></span>
             
             <!-- Appointments List -->
@@ -1949,6 +1949,9 @@
                     <!-- Will be populated dynamically -->
                 </div>
             </div>
+            </div>
+         
+         
         </div>
     </div>
 </section>
@@ -2182,8 +2185,8 @@
           
         `;
         
-        // Statistics
-        displayStatistics(data);
+        // Statistics - Commented Out
+        // displayStatistics(data);
         
         // Tooth Diagram
         displayToothDiagram(patientCode);
@@ -2193,10 +2196,12 @@
             displayCasesList(data.cases, data.images);
         }
         
-        // Bills
+        // Bills - Commented Out
+        /*
         if (data.bills && data.bills.length > 0) {
             displayBillsList(data.bills);
         }
+        */
         
         // Appointments
         if (data.reservations && data.reservations.length > 0) {
@@ -2206,7 +2211,8 @@
         showPatientProfile();
     }
 
-    // Display Statistics
+    // Display Statistics - Commented Out
+    /*
     function displayStatistics(data) {
         const statsGrid = document.getElementById('statsGrid');
         const bills = data.bills_summary || {};
@@ -2234,15 +2240,15 @@
             </div>
         `;
     }
+    */
 
     // Display Tooth Diagram
     function displayToothDiagram(patientCode) {
         const toothDiagramSection = document.getElementById('toothDiagramSection');
         const teethIframe = document.getElementById('teethIframe');
        
-        // Use our Laravel proxy route instead of direct external URL
-        // This bypasses X-Frame-Options restrictions
-        teethIframe.src = `/tooth-diagram/${patientCode}`;
+        // Set the iframe src to the external tooth diagram URL
+        teethIframe.src = `https://smartclinicv4.tctate.com/public/teeth/${patientCode}`;
         
         // Show the section
         toothDiagramSection.style.display = 'block';
@@ -2253,57 +2259,103 @@
         const casesList = document.getElementById('casesList');
         const casesContainer = document.getElementById('casesContainer');
         
-        // Build photos HTML (images are at root level, not per case)
-        let photosHtml = '';
-        if (images && images.length > 0) {
-            const photosGrid = images.map(img => `
-                <div class="case-photo-item" onclick="window.open('https://smartclinicv5.tctate.com/case_photo/${img.path}', '_blank')">
-                    <img src="https://smartclinicv5.tctate.com/case_photo/${img.path}" 
-                         alt="صورة الحالة" 
-                         onerror="this.parentElement.style.display='none'">
-                    <div class="photo-overlay">
-                        <i class="ri-image-line"></i>
-                    </div>
-                </div>
-            `).join('');
+        // Display cases without photos
+        casesContainer.innerHTML = cases.map((caseItem, index) => {
+            // Build sessions notes HTML - only show sessions with notes
+            let sessionsHtml = '';
+            if (caseItem.sessions && caseItem.sessions.length > 0) {
+                // Filter sessions that have notes
+                const sessionsWithNotes = caseItem.sessions.filter(session => session.note && session.note.trim() !== '');
+                
+                if (sessionsWithNotes.length > 0) {
+                    const sessionsList = sessionsWithNotes.map((session, sessionIndex) => `
+                        <div style="padding: 8px 12px; background: #f7fafc; border-right: 3px solid #2a5a8f; border-radius: 6px; margin-bottom: 8px;">
+                            <strong style="color: #2a5a8f;">ملاحظة ${sessionIndex + 1}</strong>
+                            <span style="color: #4a5568; margin-right: 10px;">📅 ${formatDate(session.created_at)}</span>
+                            <br><span style="color: #4a5568; font-size: 0.9rem;">${session.note}</span>
+                        </div>
+                    `).join('');
+                    
+                    sessionsHtml = `
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 2px solid #e2e8f0;">
+                            <p style="font-weight: 700; color: #2a5a8f; margin-bottom: 10px;">
+                                <i class="ri-sticky-note-line"></i> الملاحظات (${sessionsWithNotes.length})
+                            </p>
+                            ${sessionsList}
+                        </div>
+                    `;
+                }
+            }
             
-            photosHtml = `
-                <div class="case-photos">
-                    <div class="case-photos-label">
-                        <i class="ri-gallery-line"></i>
-                        Medical Photos (${images.length})
+            return `
+                <div class="list-item">
+                    <div class="list-item-header">
+                        <div class="list-item-title">
+                            <i class="ri-heart-pulse-line"></i>
+                            ${translateCategory(caseItem.category)}${caseItem.tooth_number ? ` - <span style="color: #4a5568; font-weight: 600; font-size: 0.95rem;">رقم السن: <strong style="color: #2a5a8f; font-size: 1.1rem;">${caseItem.tooth_number}</strong></span>` : ''}
+                        </div>
+                        <div class="list-item-date">${formatDate(caseItem.created_at)}</div>
                     </div>
-                    <div class="case-photos-grid">
-                        ${photosGrid}
+                    <div class="list-item-body">
+                        ${caseItem.doctor ? `<p><strong>Doctor:</strong> ${caseItem.doctor}</p>` : ''}
+                        ${caseItem.price ? `<p><strong>السعر:</strong> ${formatCurrency(caseItem.price)}</p>` : ''}
+                        ${caseItem.notes ? `<p><strong>ملاحظات:</strong> ${caseItem.notes}</p>` : ''}
+                        ${caseItem.chief_complain ? `<p><strong>Complaint:</strong> ${caseItem.chief_complain}</p>` : ''}
+                        ${caseItem.diagnosis ? `<p><strong>Diagnosis:</strong> ${caseItem.diagnosis}</p>` : ''}
+                        ${caseItem.treatment ? `<p><strong>Treatment:</strong> ${caseItem.treatment}</p>` : ''}
+                        ${sessionsHtml}
                     </div>
                 </div>
             `;
-        }
-        
-        casesContainer.innerHTML = cases.map((caseItem, index) => `
-            <div class="list-item">
-                <div class="list-item-header">
-                    <div class="list-item-title">
-                        <i class="ri-heart-pulse-line"></i>
-                        ${translateCategory(caseItem.category)}
-                    </div>
-                    <div class="list-item-date">${formatDate(caseItem.created_at)}</div>
-                </div>
-                <div class="list-item-body">
-                    ${caseItem.doctor ? `<p><strong>Doctor:</strong> ${caseItem.doctor}</p>` : ''}
-                    ${caseItem.chief_complain ? `<p><strong>Complaint:</strong> ${caseItem.chief_complain}</p>` : ''}
-                    ${caseItem.diagnosis ? `<p><strong>Diagnosis:</strong> ${caseItem.diagnosis}</p>` : ''}
-                    ${caseItem.treatment ? `<p><strong>Treatment:</strong> ${caseItem.treatment}</p>` : ''}
-                    ${caseItem.tooth_number ? `<p><strong>Tooth Number:</strong> ${caseItem.tooth_number}</p>` : ''}
-                    ${index === 0 ? photosHtml : ''}
-                </div>
-            </div>
-        `).join('');
+        }).join('');
         
         casesList.style.display = 'block';
+        
+        // Display photos in separate section
+        if (images && images.length > 0) {
+            displayPhotosList(images);
+        }
     }
 
-    // Display Bills List
+    // Display Photos List - Separate Section
+    function displayPhotosList(images) {
+        const photosList = document.getElementById('photosList');
+        const photosContainer = document.getElementById('photosContainer');
+        
+        const photosGrid = images.map(img => `
+            <a href="https://smartclinicv5.tctate.com/case_photo/${img.path}" 
+               data-fancybox="patient-images" 
+               data-caption="صورة الحالة الطبية"
+               class="case-photo-item">
+                <img src="https://smartclinicv5.tctate.com/case_photo/${img.path}" 
+                     alt="صورة الحالة" 
+                     onerror="this.parentElement.style.display='none'">
+                <div class="photo-overlay">
+                    <i class="ri-image-line"></i>
+                </div>
+            </a>
+        `).join('');
+        
+        photosContainer.innerHTML = photosGrid;
+        photosList.style.display = 'block';
+        
+        // Re-initialize Fancybox for dynamically added images
+        if (typeof Fancybox !== 'undefined') {
+            Fancybox.bind("[data-fancybox='patient-images']", {
+                // Fancybox options
+                Toolbar: {
+                    display: {
+                        left: ["infobar"],
+                        middle: [],
+                        right: ["close"],
+                    },
+                },
+            });
+        }
+    }
+
+    // Display Bills List - Commented Out
+    /*
     function displayBillsList(bills) {
         const billsList = document.getElementById('billsList');
         const billsContainer = document.getElementById('billsContainer');
@@ -2329,6 +2381,7 @@
         
         billsList.style.display = 'block';
     }
+    */
 
     // Display Appointments List
     function displayAppointmentsList(appointments) {
@@ -2444,10 +2497,15 @@
             tabs.style.display = 'none';
         }
         
-        // Hide all lists
-        document.getElementById('casesList').style.display = 'none';
-        document.getElementById('billsList').style.display = 'none';
-        document.getElementById('appointmentsList').style.display = 'none';
+        // Hide all lists (with null checks)
+        const casesList = document.getElementById('casesList');
+        if (casesList) casesList.style.display = 'none';
+        
+        const billsList = document.getElementById('billsList');
+        if (billsList) billsList.style.display = 'none';
+        
+        const appointmentsList = document.getElementById('appointmentsList');
+        if (appointmentsList) appointmentsList.style.display = 'none';
     }
     
     /* ============================================
@@ -2743,4 +2801,7 @@
         }
     }
 </script>
+
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 @endpush

@@ -169,6 +169,8 @@
             </a>
         </div>
         
+
+        
         <div class="info-section">
             <h3><i class="ri-information-line"></i> المميزات</h3>
             <ul class="info-list">

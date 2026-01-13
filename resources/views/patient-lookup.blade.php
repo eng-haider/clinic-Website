@@ -460,7 +460,7 @@
     .profile-info-item {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 11px;
         color: #000000;
         font-size: 1rem;
         padding: 16px 20px;
@@ -495,6 +495,17 @@
     .profile-info-item span {
         font-weight: 600;
         color: #000000;
+    }
+    
+    /* Force LTR for phone numbers, emails, and numeric data */
+    .profile-info-item .ltr-data {
+        direction: ltr !important;
+        display: inline-block !important;
+        unicode-bidi: embed !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+        letter-spacing: 0 !important;
+        word-spacing: 0 !important;
     }
     
     /* ============================================
@@ -1830,19 +1841,17 @@
 @endpush
 
 @section('content')
-<!-- Breadcrumb Section Start -->
 <div class="breadcrumb-wrap bg-f br-1">
     <div class="container">
         <div class="breadcrumb-title">
-            <h2>البحث عن مريض</h2>
+            <h2>الملف الطبي</h2>
             <ul class="breadcrumb-menu list-style">
                 <li><a href="{{ route('home') }}">Home</a></li>
-                <li>البحث عن مريض</li>
+                <li>الملف الطبي</li>
             </ul>
         </div>
     </div>
 </div>
-<!-- Breadcrumb Section End -->
 
 
 
@@ -2201,6 +2210,39 @@
         // Store patient data globally for booking
         currentPatientData = patient;
         
+        // Calculate last visit and next visit from reservations
+        let lastVisit = null;
+        let nextVisit = null;
+        
+        if (data.reservations && data.reservations.length > 0) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const sortedReservations = [...data.reservations].sort((a, b) => 
+                new Date(a.reservation_start_date) - new Date(b.reservation_start_date)
+            );
+            
+            // Find last visit (most recent past date)
+            const pastVisits = sortedReservations.filter(r => {
+                const visitDate = new Date(r.reservation_start_date);
+                visitDate.setHours(0, 0, 0, 0);
+                return visitDate < today;
+            });
+            if (pastVisits.length > 0) {
+                lastVisit = pastVisits[pastVisits.length - 1];
+            }
+            
+            // Find next visit (nearest future date)
+            const futureVisits = sortedReservations.filter(r => {
+                const visitDate = new Date(r.reservation_start_date);
+                visitDate.setHours(0, 0, 0, 0);
+                return visitDate >= today;
+            });
+            if (futureVisits.length > 0) {
+                nextVisit = futureVisits[0];
+            }
+        }
+        
         // Patient Name and ID
         document.getElementById('patientName').textContent = patient.name;
         document.getElementById('patientId').textContent = `Patient ID: #${patient.id}`;
@@ -2208,35 +2250,47 @@
         // Profile Info (Gender, Age, Phone, Email)
         const profileInfo = document.getElementById('profileInfo');
         const sexIcon = patient.sex === 1 ? 'ri-men-line' : 'ri-women-line';
-        const sexText = patient.sex === 1 ? 'Male' : 'Female';
+        const sexText = patient.sex === 1 ? 'ذكر' : 'أنثى';
         
         profileInfo.innerHTML = `
             <div class="profile-info-item">
                 <i class="${sexIcon}"></i>
-                <span><strong>Gender:</strong> ${sexText}</span>
+                <span><strong>الجـنس:</strong> ${sexText}</span>
             </div>
             <div class="profile-info-item">
                 <i class="ri-calendar-line"></i>
-                <span><strong>Age:</strong> ${patient.age} years</span>
+                <span><strong>العمــر:</strong> ${patient.age} سنة</span>
             </div>
             <div class="profile-info-item">
                 <i class="ri-cake-line"></i>
-                <span><strong>Date of Birth:</strong> ${formatDate(patient.birth_date)}</span>
+                <span><strong>تاريخ الميلاد:</strong> <span class="ltr-data" dir="ltr">${formatDate(patient.birth_date)}</span></span>
             </div>
             <div class="profile-info-item">
                 <i class="ri-phone-line"></i>
-                <span><strong>Phone:</strong> ${patient.phone || 'Not available'}</span>
+                <span><strong>الهاتف:</strong> <span class="ltr-data" dir="ltr">${patient.phone || 'غير متوفر'}</span></span>
             </div>
             ${patient.email ? `
             <div class="profile-info-item">
                 <i class="ri-mail-line"></i>
-                <span><strong>Email:</strong> ${patient.email}</span>
+                <span><strong>البريد الإلكتروني:</strong> <span class="ltr-data" dir="ltr">${patient.email}</span></span>
+            </div>
+            ` : ''}
+            ${lastVisit ? `
+            <div class="profile-info-item">
+                <i class="ri-history-line"></i>
+                <span><strong>آخر زيارة للعيادة:</strong> <span class="ltr-data" dir="ltr">${formatDate(lastVisit.reservation_start_date)}</span></span>
+            </div>
+            ` : ''}
+            ${nextVisit ? `
+            <div class="profile-info-item">
+                <i class="ri-calendar-event-line"></i>
+                <span><strong>الزيارة القادمة:</strong> <span class="ltr-data" dir="ltr">${formatDate(nextVisit.reservation_start_date)}</span></span>
             </div>
             ` : ''}
             ${patient.address ? `
             <div class="profile-info-item">
                 <i class="ri-map-pin-line"></i>
-                <span><strong>Address:</strong> ${patient.address}</span>
+                <span><strong>العنــوان:</strong> ${patient.address}</span>
             </div>
             ` : ''}
             ${patient.systemic_conditions ? `
@@ -2475,25 +2529,23 @@
 
     // Utility Functions
     function formatDate(dateString) {
-        if (!dateString) return '{{ __("Not available") }}';
+        if (!dateString) return 'غير متوفر';
         const date = new Date(dateString);
-        return date.toLocaleDateString('{{ app()->getLocale() }}', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
     }
 
     function formatDateTime(dateString) {
-        if (!dateString) return '{{ __("Not available") }}';
+        if (!dateString) return 'غير متوفر';
         const date = new Date(dateString);
-        return date.toLocaleDateString('{{ app()->getLocale() }}', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${day}-${month}-${year} ${hours}:${minutes}`;
     }
 
     function formatCurrency(amount) {

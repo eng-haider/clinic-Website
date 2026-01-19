@@ -12,6 +12,7 @@ use App\Http\Controllers\PatientLookupController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ToothDiagramProxyController;
+use App\Http\Controllers\LinksController;
 
 // Language Switcher
 Route::post('/language/switch', [LanguageController::class, 'switch'])->name('language.switch');
@@ -60,3 +61,6 @@ Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->nam
 
 // Contact Form
 Route::post('/contact-message', [ContactController::class, 'store'])->name('contact.message.store');
+
+// Links (Link in Bio page)
+Route::get('/links', [LinksController::class, 'index'])->name('links.index');

@@ -173,5 +173,11 @@ return [
     'error_occurred' => 'An error occurred',
     'network_error' => 'Network error. Please try again.',
     'contact_message_sent' => 'Your message has been sent successfully! We will get back to you soon.',
+    
+    // Links Page
+    'Links' => 'Links',
+    'No links available yet' => 'No links available yet',
+    'Check back soon!' => 'Check back soon!',
+    'All rights reserved.' => 'All rights reserved.',
 ];
 

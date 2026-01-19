@@ -186,4 +186,10 @@ return [
     'error_occurred' => 'حدث خطأ',
     'network_error' => 'خطأ في الشبكة. يرجى المحاولة مرة أخرى.',
     'contact_message_sent' => 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.',
+    
+    // Links Page
+    'Links' => 'الروابط',
+    'No links available yet' => 'لا توجد روابط متاحة حالياً',
+    'Check back soon!' => 'تحقق قريباً!',
+    'All rights reserved.' => 'جميع الحقوق محفوظة.',
 ];

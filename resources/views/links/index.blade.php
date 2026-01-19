@@ -272,7 +272,7 @@
             <!-- Profile Image -->
             <div class="profile-image">
                 @if($clinicLogo)
-                    <img src="{{ asset('storage/' . $clinicLogo) }}" alt="{{ $clinicName }}">
+                    <img src="{{ $clinicLogo }}" alt="{{ $clinicName }}">
                 @else
                     <i class="fas fa-tooth" style="font-size: 3rem; color: #667eea; line-height: 96px;"></i>
                 @endif

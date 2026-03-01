@@ -2311,6 +2311,9 @@
         // Cases
         if (data.cases && data.cases.length > 0) {
             displayCasesList(data.cases, data.images);
+        } else if (data.images && data.images.length > 0) {
+            // Show photos even when there are no cases
+            displayPhotosList(data.images);
         }
         
         // Bills - Commented Out
@@ -2440,11 +2443,11 @@
         const photosContainer = document.getElementById('photosContainer');
         
         const photosGrid = images.map(img => `
-            <a href="https://smartclinicv5.tctate.com/case_photo/${img.path}" 
+            <a href="${img.path}" 
                data-fancybox="patient-images" 
                data-caption="صورة الحالة الطبية"
                class="case-photo-item">
-                <img src="https://smartclinicv5.tctate.com/case_photo/${img.path}" 
+                <img src="${img.path}" 
                      alt="صورة الحالة" 
                      onerror="this.parentElement.style.display='none'">
                 <div class="photo-overlay">

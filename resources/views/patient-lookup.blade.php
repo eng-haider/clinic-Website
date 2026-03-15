@@ -2418,7 +2418,7 @@
                     </div>
                     <div class="list-item-body">
                         ${caseItem.doctor ? `<p><strong>Doctor:</strong> ${caseItem.doctor}</p>` : ''}
-                        ${caseItem.price ? `<p><strong>السعر:</strong> ${formatCurrency(caseItem.price)}</p>` : ''}
+              
                         ${caseItem.notes ? `<p><strong>ملاحظات:</strong> ${caseItem.notes}</p>` : ''}
                         ${caseItem.chief_complain ? `<p><strong>Complaint:</strong> ${caseItem.chief_complain}</p>` : ''}
                         ${caseItem.diagnosis ? `<p><strong>Diagnosis:</strong> ${caseItem.diagnosis}</p>` : ''}

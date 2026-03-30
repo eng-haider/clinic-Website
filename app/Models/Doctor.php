@@ -24,16 +24,4 @@ class Doctor extends Model
         'social_links' => 'array',
         'is_active' => 'boolean',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($doctor) {
-            // Strip directory path from image, keep only filename
-            if ($doctor->image && str_contains($doctor->image, '/')) {
-                $doctor->image = basename($doctor->image);
-            }
-        });
-    }
 }

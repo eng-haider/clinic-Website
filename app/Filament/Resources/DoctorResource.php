@@ -34,10 +34,7 @@ class DoctorResource extends Resource
                     ->image()
                     ->disk('public')
                     ->directory('assets/img/team')
-                    ->visibility('public')
-                    ->getUploadedFileNameForStorageUsing(function ($file) {
-                        return uniqid() . '.' . $file->getClientOriginalExtension();
-                    }),
+                    ->visibility('public'),
                 Forms\Components\TextInput::make('email')
                     ->email(),
                 Forms\Components\TextInput::make('phone')

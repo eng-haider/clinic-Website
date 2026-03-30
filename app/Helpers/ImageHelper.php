@@ -5,6 +5,11 @@ if (!function_exists('doctor_image')) {
         if (!$filename) {
             return asset('assets/img/team/team-1.webp');
         }
+        // New uploads via Filament storage (e.g. "assets/img/team/abc.jpg")
+        if (str_contains($filename, '/')) {
+            return asset('storage/' . $filename);
+        }
+        // Legacy records that only stored the filename
         return asset('assets/img/team/' . $filename);
     }
 }

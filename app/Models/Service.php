@@ -19,16 +19,4 @@ class Service extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($service) {
-            // Strip directory path from image, keep only filename
-            if ($service->image && str_contains($service->image, '/')) {
-                $service->image = basename($service->image);
-            }
-        });
-    }
 }

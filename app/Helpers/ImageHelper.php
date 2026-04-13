@@ -19,6 +19,9 @@ if (!function_exists('service_image')) {
         if (!$filename) {
             return asset('assets/img/services/service-1.webp');
         }
+        if (str_contains($filename, '/')) {
+            return asset('storage/' . $filename);
+        }
         return asset('assets/img/services/' . $filename);
     }
 }

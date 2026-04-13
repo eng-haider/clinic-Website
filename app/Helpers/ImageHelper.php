@@ -31,6 +31,9 @@ if (!function_exists('blog_image')) {
         if (!$filename) {
             return asset('assets/img/blog/blog-1.webp');
         }
+        if (str_contains($filename, '/')) {
+            return asset('storage/' . $filename);
+        }
         return asset('assets/img/blog/' . $filename);
     }
 }

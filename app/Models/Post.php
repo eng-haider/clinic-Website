@@ -34,19 +34,11 @@ class Post extends Model
             if (empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
             }
-            // Strip directory path from featured_image, keep only filename
-            if ($post->featured_image && str_contains($post->featured_image, '/')) {
-                $post->featured_image = basename($post->featured_image);
-            }
         });
 
         static::updating(function ($post) {
             if ($post->isDirty('title') && empty($post->slug)) {
                 $post->slug = Str::slug($post->title);
-            }
-            // Strip directory path from featured_image, keep only filename
-            if ($post->featured_image && str_contains($post->featured_image, '/')) {
-                $post->featured_image = basename($post->featured_image);
             }
         });
     }

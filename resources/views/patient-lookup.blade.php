@@ -4,7 +4,7 @@
 
 @push('styles')
 <!-- Fancybox CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css" />
 <style>
     /* ============================================
        MEDICAL-GRADE PATIENT PROFILE SYSTEM
@@ -2438,31 +2438,52 @@
     }
 
     // Display Photos List - Separate Section
-    function displayPhotosList(images) {
+    async function displayPhotosList(images) {
         const photosList = document.getElementById('photosList');
         const photosContainer = document.getElementById('photosContainer');
-        
-        const photosGrid = images.map(img => `
-            <a href="${img.path}" 
-               data-fancybox="patient-images" 
+
+        // Preload every image and keep only the ones that actually decode.
+        // This guarantees a broken/unloadable image can never end up as a
+        // blank ("black screen") slide inside the Fancybox gallery group.
+        const validImages = (await Promise.all((images || []).map(img =>
+            new Promise(resolve => {
+                const probe = new Image();
+                probe.onload = () => resolve(probe.naturalWidth > 0 ? img : null);
+                probe.onerror = () => resolve(null);
+                probe.src = img.path;
+            })
+        ))).filter(Boolean);
+
+        if (validImages.length === 0) {
+            photosList.style.display = 'none';
+            return;
+        }
+
+        const photosGrid = validImages.map(img => `
+            <a href="${img.path}"
+               data-fancybox="patient-images"
+               data-type="image"
                data-caption="صورة الحالة الطبية"
                class="case-photo-item">
-                <img src="${img.path}" 
-                     alt="صورة الحالة" 
-                     onerror="this.parentElement.style.display='none'">
+                <img src="${img.path}"
+                     alt="صورة الحالة"
+                     loading="lazy">
                 <div class="photo-overlay">
                     <i class="ri-image-line"></i>
                 </div>
             </a>
         `).join('');
-        
+
         photosContainer.innerHTML = photosGrid;
         photosList.style.display = 'block';
-        
-        // Re-initialize Fancybox for dynamically added images
+
+        // (Re)initialize Fancybox for the freshly rendered images. Unbind and
+        // close any previous instance first so repeated lookups never stack
+        // duplicate handlers (a common cause of blank/black slides in v5).
         if (typeof Fancybox !== 'undefined') {
+            Fancybox.close();
+            Fancybox.unbind("[data-fancybox='patient-images']");
             Fancybox.bind("[data-fancybox='patient-images']", {
-                // Fancybox options
                 Toolbar: {
                     display: {
                         left: ["infobar"],
@@ -2921,5 +2942,5 @@
 </script>
 
 <!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js"></script>
 @endpush

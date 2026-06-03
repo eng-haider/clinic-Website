@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -l bootstrap/app.php)",
+      "Bash(php -l routes/web.php)",
+      "Bash(php -l app/Http/Controllers/CasePhotoProxyController.php)"
+    ]
+  }
+}

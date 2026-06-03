@@ -53,6 +53,8 @@ Route::post('/api/patient/lookup', [PatientLookupController::class, 'lookup'])->
 // Tooth Diagram Proxy (to bypass X-Frame-Options)
 Route::get('/tooth-diagram/{patientCode}', [ToothDiagramProxyController::class, 'show'])->name('tooth.diagram.proxy');
 
+// Case Photo Proxy is registered in bootstrap/app.php (then:) as a stateless route.
+
 // Bookings
 Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');

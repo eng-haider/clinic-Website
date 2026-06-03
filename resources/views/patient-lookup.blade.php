@@ -2038,6 +2038,22 @@
     // API Configuration
     const API_URL = '{{ route("api.patient.lookup") }}';
     const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').content;
+    // Same-origin proxy that re-encodes case photos to RGB JPEG. Some X-rays
+    // come back as grayscale JPEGs that render as a black frame inside the
+    // Fancybox zoom layer on certain devices; the proxy normalizes them.
+    const CASE_PHOTO_PROXY_BASE = '{{ url('/case-photo') }}';
+
+    // Build a same-origin proxy URL from an external case-photo URL.
+    // Falls back to the original URL if the filename can't be extracted.
+    function casePhotoUrl(originalUrl) {
+        try {
+            const file = new URL(originalUrl, window.location.origin).pathname.split('/').pop();
+            if (file && /^[A-Za-z0-9_\-]+\.(jpe?g|png)$/i.test(file)) {
+                return `${CASE_PHOTO_PROXY_BASE}/${file}`;
+            }
+        } catch (e) { /* ignore */ }
+        return originalUrl;
+    }
 
     let html5QrCode = null;
     let isScannerActive = false;
@@ -2442,30 +2458,32 @@
         const photosList = document.getElementById('photosList');
         const photosContainer = document.getElementById('photosContainer');
 
-        // Preload every image and keep only the ones that actually decode.
-        // This guarantees a broken/unloadable image can never end up as a
-        // blank ("black screen") slide inside the Fancybox gallery group.
-        const validImages = (await Promise.all((images || []).map(img =>
-            new Promise(resolve => {
+        // Route every image through the same-origin RGB proxy, then preload it
+        // and keep only the ones that actually decode. The proxy fixes grayscale
+        // X-rays that render black in Fancybox; the preload guarantees a broken
+        // image can never end up as a blank ("black screen") slide.
+        const validImages = (await Promise.all((images || []).map(img => {
+            const url = casePhotoUrl(img.path);
+            return new Promise(resolve => {
                 const probe = new Image();
-                probe.onload = () => resolve(probe.naturalWidth > 0 ? img : null);
+                probe.onload = () => resolve(probe.naturalWidth > 0 ? url : null);
                 probe.onerror = () => resolve(null);
-                probe.src = img.path;
-            })
-        ))).filter(Boolean);
+                probe.src = url;
+            });
+        }))).filter(Boolean);
 
         if (validImages.length === 0) {
             photosList.style.display = 'none';
             return;
         }
 
-        const photosGrid = validImages.map(img => `
-            <a href="${img.path}"
+        const photosGrid = validImages.map(url => `
+            <a href="${url}"
                data-fancybox="patient-images"
                data-type="image"
                data-caption="صورة الحالة الطبية"
                class="case-photo-item">
-                <img src="${img.path}"
+                <img src="${url}"
                      alt="صورة الحالة"
                      loading="lazy">
                 <div class="photo-overlay">

@@ -3,8 +3,6 @@
 @section('title', __('Patient Lookup') . ' - ' . config('app.name'))
 
 @push('styles')
-<!-- Fancybox CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css" />
 <style>
     /* ============================================
        MEDICAL-GRADE PATIENT PROFILE SYSTEM
@@ -868,6 +866,106 @@
         padding: 14px;
         text-align: center;
         font-size: 1rem;
+    }
+
+    /* ============================================
+       CUSTOM IMAGE LIGHTBOX (replaces Fancybox)
+       Plain <img> with no transform/GPU zoom layer,
+       so grayscale X-rays never render black.
+       ============================================ */
+    .img-lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 100000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.92);
+        direction: ltr;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .img-lightbox.open {
+        display: flex;
+    }
+
+    .img-lightbox__img {
+        max-width: 92vw;
+        max-height: 88vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        background: #111;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    .img-lightbox__btn {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+        z-index: 2;
+    }
+
+    .img-lightbox__btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    .img-lightbox__close {
+        top: 18px;
+        right: 18px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        font-size: 1.9rem;
+        line-height: 1;
+    }
+
+    .img-lightbox__nav {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        font-size: 2rem;
+        line-height: 1;
+    }
+
+    .img-lightbox__prev { left: 18px; }
+    .img-lightbox__next { right: 18px; }
+
+    .img-lightbox__counter {
+        position: absolute;
+        top: 22px;
+        left: 22px;
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 5px 12px;
+        border-radius: 20px;
+        z-index: 2;
+    }
+
+    /* Single image: hide the prev/next arrows */
+    .img-lightbox--single .img-lightbox__nav,
+    .img-lightbox--single .img-lightbox__counter {
+        display: none;
+    }
+
+    @media (max-width: 480px) {
+        .img-lightbox__nav { width: 44px; height: 44px; font-size: 1.6rem; }
+        .img-lightbox__prev { left: 8px; }
+        .img-lightbox__next { right: 8px; }
+        .img-lightbox__close { top: 10px; right: 10px; width: 42px; height: 42px; }
     }
     
     /* ============================================
@@ -2028,6 +2126,15 @@
     </div>
 </section>
 <!-- Patient Lookup Section End -->
+
+<!-- Custom Image Lightbox (replaces Fancybox) -->
+<div id="imageLightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="img-lightbox__counter" id="lightboxCounter"></div>
+    <button type="button" class="img-lightbox__btn img-lightbox__close" id="lightboxClose" aria-label="إغلاق">&times;</button>
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__prev" id="lightboxPrev" aria-label="السابق">&#8249;</button>
+    <img class="img-lightbox__img" id="lightboxImg" src="" alt="صورة الحالة الطبية">
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__next" id="lightboxNext" aria-label="التالي">&#8250;</button>
+</div>
 @endsection
 
 @push('scripts')
@@ -2453,15 +2560,18 @@
         }
     }
 
+    // Holds the URLs currently shown in the gallery (used by the lightbox).
+    let galleryImages = [];
+
     // Display Photos List - Separate Section
     async function displayPhotosList(images) {
         const photosList = document.getElementById('photosList');
         const photosContainer = document.getElementById('photosContainer');
 
         // Route every image through the same-origin RGB proxy, then preload it
-        // and keep only the ones that actually decode. The proxy fixes grayscale
-        // X-rays that render black in Fancybox; the preload guarantees a broken
-        // image can never end up as a blank ("black screen") slide.
+        // and keep only the ones that actually decode. The proxy normalizes
+        // grayscale X-rays to RGB; the preload drops any broken image so it can
+        // never show up as a blank ("black screen") slide.
         const validImages = (await Promise.all((images || []).map(img => {
             const url = casePhotoUrl(img.path);
             return new Promise(resolve => {
@@ -2477,41 +2587,97 @@
             return;
         }
 
-        const photosGrid = validImages.map(url => `
-            <a href="${url}"
-               data-fancybox="patient-images"
-               data-type="image"
-               data-caption="صورة الحالة الطبية"
-               class="case-photo-item">
-                <img src="${url}"
-                     alt="صورة الحالة"
-                     loading="lazy">
+        galleryImages = validImages;
+
+        photosContainer.innerHTML = validImages.map((url, i) => `
+            <div class="case-photo-item" onclick="openLightbox(${i})" role="button" tabindex="0" aria-label="عرض الصورة">
+                <img src="${url}" alt="صورة الحالة" loading="lazy">
                 <div class="photo-overlay">
-                    <i class="ri-image-line"></i>
+                    <i class="ri-zoom-in-line"></i>
                 </div>
-            </a>
+            </div>
         `).join('');
 
-        photosContainer.innerHTML = photosGrid;
         photosList.style.display = 'block';
+    }
 
-        // (Re)initialize Fancybox for the freshly rendered images. Unbind and
-        // close any previous instance first so repeated lookups never stack
-        // duplicate handlers (a common cause of blank/black slides in v5).
-        if (typeof Fancybox !== 'undefined') {
-            Fancybox.close();
-            Fancybox.unbind("[data-fancybox='patient-images']");
-            Fancybox.bind("[data-fancybox='patient-images']", {
-                Toolbar: {
-                    display: {
-                        left: ["infobar"],
-                        middle: [],
-                        right: ["close"],
-                    },
-                },
+    /* ============================================
+       CUSTOM IMAGE LIGHTBOX (replaces Fancybox)
+       ============================================ */
+    let lightboxIndex = 0;
+
+    function openLightbox(index) {
+        if (!galleryImages.length) return;
+        lightboxIndex = index;
+        const box = document.getElementById('imageLightbox');
+        box.classList.toggle('img-lightbox--single', galleryImages.length <= 1);
+        renderLightbox();
+        box.classList.add('open');
+        box.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        const box = document.getElementById('imageLightbox');
+        box.classList.remove('open');
+        box.setAttribute('aria-hidden', 'true');
+        document.getElementById('lightboxImg').src = '';
+        document.body.style.overflow = '';
+    }
+
+    function lightboxStep(delta) {
+        if (!galleryImages.length) return;
+        lightboxIndex = (lightboxIndex + delta + galleryImages.length) % galleryImages.length;
+        renderLightbox();
+    }
+
+    function renderLightbox() {
+        document.getElementById('lightboxImg').src = galleryImages[lightboxIndex];
+        document.getElementById('lightboxCounter').textContent =
+            `${lightboxIndex + 1} / ${galleryImages.length}`;
+    }
+
+    (function initLightbox() {
+        const box = document.getElementById('imageLightbox');
+        if (!box) return;
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxPrev').addEventListener('click', () => lightboxStep(-1));
+        document.getElementById('lightboxNext').addEventListener('click', () => lightboxStep(1));
+
+        // Click on the dark backdrop (not the image or buttons) closes it.
+        box.addEventListener('click', (e) => { if (e.target === box) closeLightbox(); });
+
+        // Keyboard navigation while open.
+        document.addEventListener('keydown', (e) => {
+            if (!box.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            else if (e.key === 'ArrowRight') lightboxStep(1);
+            else if (e.key === 'ArrowLeft') lightboxStep(-1);
+        });
+
+        // Open with Enter/Space when a thumbnail is focused.
+        const grid = document.getElementById('photosContainer');
+        if (grid) {
+            grid.addEventListener('keydown', (e) => {
+                const item = e.target.closest('.case-photo-item');
+                if (item && (e.key === 'Enter' || e.key === ' ')) {
+                    e.preventDefault();
+                    item.click();
+                }
             });
         }
-    }
+
+        // Basic swipe support on touch devices.
+        let startX = null;
+        box.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+        box.addEventListener('touchend', (e) => {
+            if (startX === null) return;
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 50) lightboxStep(dx < 0 ? 1 : -1);
+            startX = null;
+        }, { passive: true });
+    })();
 
     // Display Bills List - Commented Out
     /*
@@ -2959,6 +3125,4 @@
     }
 </script>
 
-<!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js"></script>
 @endpush

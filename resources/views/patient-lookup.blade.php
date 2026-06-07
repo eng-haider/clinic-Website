@@ -2132,9 +2132,9 @@
 <div id="imageLightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="img-lightbox__counter" id="lightboxCounter"></div>
     <button type="button" class="img-lightbox__btn img-lightbox__close" id="lightboxClose" aria-label="إغلاق">&times;</button>
-    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__prev" id="lightboxPrev" aria-label="السابق">&#8250;</button>
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__prev" id="lightboxPrev" aria-label="السابق">&#8249;</button>
     <img class="img-lightbox__img" id="lightboxImg" src="" alt="صورة الحالة الطبية">
-    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__next" id="lightboxNext" aria-label="التالي">&#8249;</button>
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__next" id="lightboxNext" aria-label="التالي">&#8250;</button>
 </div>
 @endsection
 

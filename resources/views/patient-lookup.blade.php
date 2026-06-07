@@ -939,8 +939,9 @@
         line-height: 1;
     }
 
-    .img-lightbox__prev { left: 18px; }
-    .img-lightbox__next { right: 18px; }
+    /* RTL: previous on the right, next on the left */
+    .img-lightbox__prev { right: 18px; }
+    .img-lightbox__next { left: 18px; }
 
     .img-lightbox__counter {
         position: absolute;
@@ -963,8 +964,8 @@
 
     @media (max-width: 480px) {
         .img-lightbox__nav { width: 44px; height: 44px; font-size: 1.6rem; }
-        .img-lightbox__prev { left: 8px; }
-        .img-lightbox__next { right: 8px; }
+        .img-lightbox__prev { right: 8px; }
+        .img-lightbox__next { left: 8px; }
         .img-lightbox__close { top: 10px; right: 10px; width: 42px; height: 42px; }
     }
     
@@ -2131,9 +2132,9 @@
 <div id="imageLightbox" class="img-lightbox" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="img-lightbox__counter" id="lightboxCounter"></div>
     <button type="button" class="img-lightbox__btn img-lightbox__close" id="lightboxClose" aria-label="إغلاق">&times;</button>
-    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__prev" id="lightboxPrev" aria-label="السابق">&#8249;</button>
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__prev" id="lightboxPrev" aria-label="السابق">&#8250;</button>
     <img class="img-lightbox__img" id="lightboxImg" src="" alt="صورة الحالة الطبية">
-    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__next" id="lightboxNext" aria-label="التالي">&#8250;</button>
+    <button type="button" class="img-lightbox__btn img-lightbox__nav img-lightbox__next" id="lightboxNext" aria-label="التالي">&#8249;</button>
 </div>
 @endsection
 
